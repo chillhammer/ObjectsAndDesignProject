@@ -1,8 +1,8 @@
 package edu.gatech.a2340.shelterme.Controller;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -11,6 +11,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import edu.gatech.a2340.shelterme.Model.UserType;
 import edu.gatech.a2340.shelterme.R;
@@ -21,10 +26,11 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText passwordInput;
     private EditText passwordConfirmInput;
     private Spinner userTypeInput;
-    private boolean isAdmin;
     private Button registerButton;
 
     private Button cancelButton;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,8 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
 
+        mAuth = FirebaseAuth.getInstance();
+
     }
 
     public void onRegisterPressed() {
@@ -72,6 +80,23 @@ public class RegistrationActivity extends AppCompatActivity {
                     "Password and confirm password must match.",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void attemptFirebaseRegistration(String email, String password) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            //Registration successful, replace registration activity with main
+                            //with user logged in
+                        } else {
+                            //Registration failed
+                            Toast.makeText(RegistrationActivity.this, "Registration failed",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
 }
