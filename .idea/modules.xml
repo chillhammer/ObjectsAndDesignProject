@@ -4,8 +4,10 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ObjectsAndDesignProject.iml" filepath="$PROJECT_DIR$/ObjectsAndDesignProject.iml" />
       <module fileurl="file://C:\Users\kpx\Desktop\ObjectsAndDesignProject\ObjectsAndDesignProject.iml" filepath="C:\Users\kpx\Desktop\ObjectsAndDesignProject\ObjectsAndDesignProject.iml" />
+      <module fileurl="file://C:\Users\pikmin_2\Documents\GitHub\ObjectsAndDesignProject\ObjectsAndDesignProject.iml" filepath="C:\Users\pikmin_2\Documents\GitHub\ObjectsAndDesignProject\ObjectsAndDesignProject.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://C:\Users\kpx\Desktop\ObjectsAndDesignProject\app\app.iml" filepath="C:\Users\kpx\Desktop\ObjectsAndDesignProject\app\app.iml" />
+      <module fileurl="file://C:\Users\pikmin_2\Documents\GitHub\ObjectsAndDesignProject\app\app.iml" filepath="C:\Users\pikmin_2\Documents\GitHub\ObjectsAndDesignProject\app\app.iml" />
     </modules>
   </component>
 </project>
