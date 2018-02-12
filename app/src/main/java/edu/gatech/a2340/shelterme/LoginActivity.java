@@ -8,11 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
 
     // Android widgets for binding and getting information
-    private TextView _statusText;
     private EditText _emailInput;
     private EditText _passwordInput;
     private Button _signInButton;
@@ -22,7 +22,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        _statusText = (TextView) findViewById(R.id.login_status_text);
         _emailInput = (EditText) findViewById(R.id.email_input);
         _passwordInput = (EditText) findViewById(R.id.password_input);
         _signInButton = (Button) findViewById(R.id.email_sign_in_button);
@@ -37,10 +36,13 @@ public class LoginActivity extends AppCompatActivity {
     public void onSignInPressed() {
         if (_emailInput.getText().toString().equals("user")
                 && _passwordInput.getText().toString().equals("pass")) {
+            Toast.makeText(getApplicationContext(), "Redirecting...",
+                    Toast.LENGTH_SHORT).show();
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(i);
         } else {
-            _statusText.setText("Incorrect username or password.");
+            Toast.makeText(getApplicationContext(), "Incorrect username or password.",
+                    Toast.LENGTH_SHORT).show();
         }
 
     }

@@ -81,14 +81,6 @@
                 android:text="Register"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/login_status_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textColor="@android:color/background_dark"
-                android:textSize="24sp" />
-
         </LinearLayout>
 
     </ScrollView>
