@@ -1,21 +1,26 @@
-package edu.gatech.a2340.shelterme;
+package edu.gatech.a2340.shelterme.Controller;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
+
+import edu.gatech.a2340.shelterme.Model.UserType;
+import edu.gatech.a2340.shelterme.R;
 
 public class RegistrationActivity extends AppCompatActivity {
 
     private EditText usernameInput;
     private EditText passwordInput;
     private EditText passwordConfirmInput;
-    private Switch isAdminInput;
+    private Spinner userTypeInput;
     private boolean isAdmin;
     private Button registerButton;
 
@@ -29,16 +34,15 @@ public class RegistrationActivity extends AppCompatActivity {
         usernameInput = (EditText) findViewById(R.id.username_input);
         passwordInput = (EditText) findViewById(R.id.password_input);
         passwordConfirmInput = (EditText) findViewById(R.id.passwordconfirm_input);
-        isAdminInput = (Switch) findViewById(R.id.admin_input);
+
+        //Set up adapter stuff for the spinner
+        userTypeInput = (Spinner) findViewById(R.id.user_type_input);
+        ArrayAdapter<UserType> typeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, UserType.values());
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        userTypeInput.setAdapter(typeAdapter);
+
         registerButton = (Button) findViewById(R.id.registration_button);
         cancelButton = (Button) findViewById(R.id.cancel_button);
-
-        isAdminInput.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                isAdmin = isChecked;
-            }
-        });
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
