@@ -1,6 +1,7 @@
 package edu.gatech.a2340.shelterme.Model;
 
 public enum UserType {
+    ANONYMOUS,
     USER,
     SHELTER_OWNER,
     ADMIN;
@@ -22,5 +23,18 @@ public enum UserType {
             }
         }
         return name;
+    }
+
+
+    /**
+     * Removes the anonymous user type from values()
+     * @return values() minus the anonymous user type
+     */
+    public static UserType[] getValues() {
+        UserType[] values = new UserType[values().length - 1];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = values()[i + 1];
+        }
+        return values;
     }
 }
