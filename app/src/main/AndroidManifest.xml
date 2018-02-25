@@ -26,6 +26,10 @@
         <activity
             android:name=".Controller.RegistrationActivity"
             android:label="@string/title_activity_registration"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Controller.DetailsActivity"
+            android:label="@string/title_activity_details"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
