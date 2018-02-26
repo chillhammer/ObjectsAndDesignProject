@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +35,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private FirebaseDatabase database;
+
+    private FirebaseAuth.IdTokenListener tokenListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +72,14 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
         auth = FirebaseAuth.getInstance();
-        auth.signOut();
         database = FirebaseDatabase.getInstance();
 
+        tokenListener = new FirebaseAuth.IdTokenListener() {
+            @Override
+            public void onIdTokenChanged(@NonNull FirebaseAuth firebaseAuth) {
+                Log.w("RegistrationActivity", "onIdTokenChanged:Current user: " + firebaseAuth.getCurrentUser().getEmail());
+            }
+        };
     }
 
     /**
@@ -102,21 +110,31 @@ public class RegistrationActivity extends AppCompatActivity {
      * @param password Password of new user
      * @param userType UserType of new user
      */
-    private void attemptFirebaseRegistration(final String email, String password, final UserType userType) {
+    private void attemptFirebaseRegistration(final String email, final String password, final UserType userType) {
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            //Registration successful, setup user information in database
-                            FirebaseUser user = auth.getCurrentUser();
-                            DatabaseReference ref = database.getReference().child("users").child(user.getUid());
-                            ref.child("email").setValue(email);
-                            ref.child("userType").setValue(userType.name());
-                            Toast.makeText(RegistrationActivity.this,
-                                    "Registration successful, you may now sign in!",
-                                    Toast.LENGTH_LONG).show();
                             auth.signOut();
+                            auth.signInWithEmailAndPassword(email, password)
+                                    .addOnSuccessListener(RegistrationActivity.this,
+                                            new OnSuccessListener<AuthResult>() {
+                                @Override
+                                public void onSuccess(AuthResult authResult) {
+                                    //Registration successful, setup user information in database
+                                    Log.w("RegistrationActivity", "createUserWithEmail:Registration successful. Attempting to add user data to database");
+                                    FirebaseUser user = auth.getCurrentUser();
+                                    DatabaseReference ref = database.getReference().child("users").child(user.getUid());
+                                    ref.child("email").setValue(email);
+                                    ref.child("userType").setValue(userType.name());
+                                    Log.w("RegistrationActivity", "createUserWithEmail:Data upload attempt finished.");
+                                    Toast.makeText(RegistrationActivity.this,
+                                            "Registration successful, you may now sign in!",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            });
+
                         } else {
                             //Registration failed
                             Log.w("RegistrationActivity", "createUserWithEmail:failure", task.getException());
