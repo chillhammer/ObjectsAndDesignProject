@@ -67,6 +67,8 @@ public class LoginActivity extends AppCompatActivity {
      * Validates the input then attempts to login with firebase authentication
      */
     public void onSignInPressed() {
+
+
         //Validate input
         String email = emailInput.getText().toString();
         String pass = passwordInput.getText().toString();
@@ -77,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //Do actual firebase login
         attemptFirebaseLogin(email, pass);
+
     }
 
     /**
