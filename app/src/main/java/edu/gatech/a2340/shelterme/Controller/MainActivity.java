@@ -43,17 +43,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ListView listView = findViewById(R.id.listView);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.listview, dataset);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dataset);
         listView.setAdapter(adapter);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("shelters").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (dataset.isEmpty()) {
-                    for (DataSnapshot child : snapshot.child("shelters").getChildren()) {
+                    for (DataSnapshot child : snapshot.getChildren()) {
                         String name = (String) child.child("name").getValue();
                         MainActivity.dataset.add(name);
                     }
