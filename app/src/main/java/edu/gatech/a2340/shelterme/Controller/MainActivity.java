@@ -88,17 +88,19 @@ public class MainActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                User.userType = UserType.ANONYMOUS;
-                User.userEmail = "NoEmail";
                 finish();
             }
         });
 
     }
 
-
-
+    @Override
+    protected void onDestroy() {
+        FirebaseAuth.getInstance().signOut();
+        User.userType = UserType.ANONYMOUS;
+        User.userEmail = "NoEmail";
+        super.onDestroy();
+    }
 
 
 }
