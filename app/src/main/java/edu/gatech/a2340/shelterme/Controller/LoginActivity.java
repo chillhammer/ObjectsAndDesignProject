@@ -35,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseDatabase database;
 
+    boolean loggingIn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+
+        loggingIn = false;
 
         emailInput = (EditText) findViewById(R.id.email_input);
         passwordInput = (EditText) findViewById(R.id.password_input);
@@ -68,18 +72,20 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void onSignInPressed() {
 
+        if (!loggingIn && hasWindowFocus()) {
+            loggingIn = true;
+            //Validate input
+            String email = emailInput.getText().toString();
+            String pass = passwordInput.getText().toString();
+            if (email.isEmpty() || pass.isEmpty()) {
+                Toast.makeText(LoginActivity.this, "Please input an email and password", Toast.LENGTH_SHORT).show();
+                loggingIn = false;
+                return;
+            }
 
-        //Validate input
-        String email = emailInput.getText().toString();
-        String pass = passwordInput.getText().toString();
-        if (email.isEmpty() || pass.isEmpty()) {
-            Toast.makeText(LoginActivity.this, "Please input an email and password", Toast.LENGTH_SHORT).show();
-            return;
+            //Do actual firebase login
+            attemptFirebaseLogin(email, pass);
         }
-
-        //Do actual firebase login
-        attemptFirebaseLogin(email, pass);
-
     }
 
     /**
@@ -94,6 +100,8 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
                             FirebaseUser user = auth.getCurrentUser();
                             //I hate that firebase makes you create a listener JUST TO GET DATA
                             database.getReference().child("users").child(user.getUid())
@@ -102,8 +110,6 @@ public class LoginActivity extends AppCompatActivity {
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             User.userEmail = (String) dataSnapshot.child("email").getValue();
                                             User.userType = UserType.valueOf(((String) dataSnapshot.child("userType").getValue()));
-                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                            startActivity(intent);
                                         }
 
                                         @Override
@@ -114,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.w("LoginActivity", "Email and password login failed", task.getException());
                             Toast.makeText(LoginActivity.this, "Sign In failed", Toast.LENGTH_SHORT).show();
                         }
+                        loggingIn = false;
                     }
                 });
     }
