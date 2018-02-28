@@ -14,6 +14,7 @@ import edu.gatech.a2340.shelterme.R;
 
 public class DetailsActivity extends AppCompatActivity {
 
+    private TextView nameView;
     private TextView capacityView;
     private TextView genderView;
     private TextView longView;
@@ -29,6 +30,7 @@ public class DetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        nameView = (TextView) findViewById(R.id.shelterName);
         capacityView = (TextView) findViewById(R.id.shelterCapacity);
         genderView = (TextView) findViewById(R.id.shelterGender);
         longView = (TextView) findViewById(R.id.shelterLong);
@@ -46,19 +48,14 @@ public class DetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
 
-        /*
-            Below will not be fully functional until one of you implements the intent that launches
-            the Details activity. Utilize Intent class's putExtra() method to pass info through the
-            intent. See more:
-            https://stackoverflow.com/questions/5265913/how-to-use-putextra-and-getextra-for-string-data
-         */
         if (b != null) {
-            capacityView.setText((String) b.get("capacity"));
-            genderView.setText((String) b.get("gender"));
-            longView.setText((String) b.get("long"));
-            latView.setText((String) b.get("lat"));
-            addressView.setText((String) b.get("address"));
-            phoneView.setText((String) b.get("phone"));
+            nameView.setText((String) b.get("name"));
+            capacityView.setText("Capacity: " + (String) b.get("capacity"));
+            genderView.setText("Restrictions: " + (String) b.get("gender"));
+            longView.setText("Longitude: " + (String) b.get("long"));
+            latView.setText("Latitude: " + (String) b.get("lat"));
+            addressView.setText("Address: " + (String) b.get("address"));
+            phoneView.setText("Phone number: " + (String) b.get("phone"));
 
         }
 

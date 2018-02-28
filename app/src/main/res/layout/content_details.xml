@@ -85,7 +85,7 @@
 
     <TextView
         android:id="@+id/shelterName"
-        android:layout_width="147dp"
+        android:layout_width="334dp"
         android:layout_height="37dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
