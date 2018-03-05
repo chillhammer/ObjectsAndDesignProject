@@ -7,7 +7,7 @@ public class Shelter {
     private String latitude;
     private String phone;
     private String capacity;
-    private String gender;
+    private String restrictions;
 
     //Getters And Setters
     public String getName() {
@@ -46,8 +46,8 @@ public class Shelter {
     public String getCapacity() {return capacity;}
     public void setCapacity(String capacity) {this.capacity = capacity;}
 
-    public String getGender() {return gender;}
-    public void setGender(String gender) {this.gender = gender;}
+    public String getRestrictions() {return restrictions;}
+    public void setRestrictions(String restrictions) {this.restrictions = restrictions;}
 
     //Constructors
     public Shelter() {
@@ -66,7 +66,7 @@ public class Shelter {
                    String longitude, String latitude, String address, String phone) {
         this.name = name;
         this.capacity = capacity;
-        this.gender = gender;
+        this.restrictions = gender;
         this.longitude = longitude;
         this.latitude = latitude;
         this.address = address;
