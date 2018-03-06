@@ -6,22 +6,39 @@
     android:layout_height="match_parent"
     tools:context="edu.gatech.a2340.shelterme.Controller.MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ListView
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:titleTextColor="@android:color/white"
+            app:title="ShelterMe"/>
+
+        <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_alignParentTop="true"
         android:layout_above="@+id/logoutButton"
         android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:text="Log Out"
-        android:textAllCaps="false"
-        android:textSize="24sp"/>
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="Log Out"
+            android:textAllCaps="false"
+            android:textSize="24sp" />
+
+    </LinearLayout>
 
 </RelativeLayout>
