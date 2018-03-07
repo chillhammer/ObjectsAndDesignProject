@@ -25,12 +25,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import edu.gatech.a2340.shelterme.Model.Shelter;
+import edu.gatech.a2340.shelterme.Model.ShelterQueryComparator;
 import edu.gatech.a2340.shelterme.Model.User;
 import edu.gatech.a2340.shelterme.Model.UserType;
 import edu.gatech.a2340.shelterme.R;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
+import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
 //    private static List<String> dataset = new ArrayList<>();
     private static List<Shelter> realDataset = new ArrayList<>();
+    private List<Shelter> datasetBuffer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         handleIntent(getIntent());
 
-
+        datasetBuffer = new ArrayList<Shelter>(realDataset);
 
 
 
@@ -128,10 +134,32 @@ public class MainActivity extends AppCompatActivity {
         handleIntent(intent);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        datasetBuffer = new ArrayList<Shelter>(realDataset);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Collections.copy(realDataset, datasetBuffer);
+    }
+
+    private List<String> getStringList(List<? extends Object> list) {
+        List<String> strings = new ArrayList<>(list.size());
+        for (Object object : list) {
+            strings.add(Objects.toString(object, null));
+        }
+        return strings;
+    }
+
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            Log.i("asdf", query);
+            List<String> dataList = getStringList(realDataset);
+            List<ExtractedResult> searchResults = FuzzySearch.extractSorted(query, dataList);
+            Collections.sort(realDataset, new ShelterQueryComparator(searchResults));
         }
     }
 
@@ -147,6 +175,12 @@ public class MainActivity extends AppCompatActivity {
                 (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
+
+        // Set search focus when clicked
+        searchView.setIconifiedByDefault(true);
+        searchView.setIconified(false);
+        searchView.setFocusable(true);
+        searchView.requestFocus();
 
         return true;
     }
