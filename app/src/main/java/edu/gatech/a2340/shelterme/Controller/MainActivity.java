@@ -129,23 +129,41 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /***
+     * Calls fuzzy search on new intent from ACTION_SEARCH
+     * query results
+     * @param intent a reference to the new intent created
+     */
     @Override
     protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         handleIntent(intent);
     }
 
+    /**
+     * Saves current dataset before going to another
+     * activity
+     */
     @Override
     protected void onPause() {
         super.onPause();
         datasetBuffer = new ArrayList<Shelter>(realDataset);
     }
 
+    /**
+     * Restores last dataset
+     */
     @Override
     protected void onResume(){
         super.onResume();
         Collections.copy(realDataset, datasetBuffer);
     }
 
+    /**
+     * Converts a list collection into its toString form
+     * @param list the list to be converted
+     * @return a list of stringified objects
+     */
     private List<String> getStringList(List<? extends Object> list) {
         List<String> strings = new ArrayList<>(list.size());
         for (Object object : list) {
@@ -154,6 +172,12 @@ public class MainActivity extends AppCompatActivity {
         return strings;
     }
 
+    /**
+     * Handles the intent that ACTION_SEARCH creates. Implements
+     * fuzzy search on query and then saves the results order to
+     * realDatset
+     * @param intent the new intent created
+     */
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
@@ -163,6 +187,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Tells the search menun what to do
+     * @param menu the search menu created
+     * @return status of creation
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
