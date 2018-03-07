@@ -21,8 +21,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.gatech.a2340.shelterme.Model.ManagerFacade;
 import edu.gatech.a2340.shelterme.Model.Shelter;
-import edu.gatech.a2340.shelterme.Model.User;
+import edu.gatech.a2340.shelterme.Model.UserManager;
 import edu.gatech.a2340.shelterme.Model.UserType;
 import edu.gatech.a2340.shelterme.R;
 
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 //        welcomeTextView = (TextView) findViewById(R.id.welcomeUserText);
-//        welcomeTextView.setText("Welcome " + User.userType.toString() + " " + User.userEmail);
+//        welcomeTextView.setText("Welcome " + UserManager.userType.toString() + " " + UserManager.userEmail);
 
         logoutButton = (Button) findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -115,9 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        FirebaseAuth.getInstance().signOut();
-        User.userType = UserType.ANONYMOUS;
-        User.userEmail = "NoEmail";
+        ManagerFacade.getInstance().signOut();
         super.onDestroy();
     }
 
