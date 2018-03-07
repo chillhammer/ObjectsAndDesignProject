@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
                 intent.putExtra("name", ((Shelter) adapterView.getItemAtPosition(position)).getName());
                 intent.putExtra("capacity", ((Shelter) adapterView.getItemAtPosition(position)).getCapacity());
-                intent.putExtra("gender", ((Shelter) adapterView.getItemAtPosition(position)).getGender());
+                intent.putExtra("gender", ((Shelter) adapterView.getItemAtPosition(position)).getRestrictions());
                 intent.putExtra("long", ((Shelter) adapterView.getItemAtPosition(position)).getLongitude());
                 intent.putExtra("lat", ((Shelter) adapterView.getItemAtPosition(position)).getLatitude());
                 intent.putExtra("address", ((Shelter) adapterView.getItemAtPosition(position)).getAddress());
