@@ -2,7 +2,6 @@ package edu.gatech.a2340.shelterme.Model;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -15,8 +14,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import edu.gatech.a2340.shelterme.Controller.RegistrationActivity;
 
 public class UserManager {
     private static final UserManager ourInstance = new UserManager();
@@ -105,7 +102,7 @@ public class UserManager {
                                     });
                         } else {
                             onFailure.runWithMessage("Error logging in. User may not exist.");
-                            Log.w("LoginActivity", "Email and password login failed", task.getException());
+                            Log.w("UserManager", "Email and password login failed", task.getException());
                         }
                     }
                 });
@@ -143,19 +140,19 @@ public class UserManager {
                                         @Override
                                         public void onSuccess(AuthResult authResult) {
                                             //Registration successful, setup user information in database
-                                            Log.w("RegistrationActivity", "createUserWithEmail:Registration successful. Attempting to add user data to database");
+                                            Log.w("UserManager", "createUserWithEmail:Registration successful. Attempting to add user data to database");
                                             FirebaseUser user = auth.getCurrentUser();
                                             DatabaseReference ref = database.getReference().child("users").child(user.getUid());
                                             ref.child("email").setValue(email);
                                             ref.child("userType").setValue(userType.name());
-                                            Log.w("RegistrationActivity", "createUserWithEmail:Data upload attempt finished.");
+                                            Log.w("UserManager", "createUserWithEmail:Data upload attempt finished.");
                                             onSuccess.runWithMessage("Registration successful, you may now sign in!");
                                         }
                                     });
 
                         } else {
                             //Registration failed
-                            Log.w("RegistrationActivity", "createUserWithEmail:failure", task.getException());
+                            Log.w("UserManager", "createUserWithEmail:failure", task.getException());
                             onFailure.runWithMessage("Registration failed");
                         }
                     }

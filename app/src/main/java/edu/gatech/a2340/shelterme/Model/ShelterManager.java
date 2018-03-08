@@ -1,5 +1,13 @@
 package edu.gatech.a2340.shelterme.Model;
 
+import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,5 +24,26 @@ public class ShelterManager {
     private List<Shelter> shelters;
 
     private ShelterManager() {
+        shelters = new ArrayList<>();
+    }
+
+    void updateShelterList(DataSnapshot snapshot) {
+        List<Shelter> updatedShelters = new ArrayList<>();
+        for (DataSnapshot child : snapshot.getChildren()) {
+            String name = (String) child.child("name").getValue();
+            String capacity = (String) child.child("capacity").getValue();
+            String gender = (String) child.child("restrictions").getValue();
+            String longitude = (String) child.child("longitude").getValue();
+            String lat = (String) child.child("latitude").getValue();
+            String address = (String) child.child("address").getValue();
+            String phone = (String) child.child("phone_number").getValue();
+            updatedShelters.add(new Shelter(name, capacity, gender, longitude,
+                    lat, address, phone));
+        }
+        shelters = updatedShelters;
+    }
+
+    List<Shelter> getShelterList() {
+        return shelters;
     }
 }

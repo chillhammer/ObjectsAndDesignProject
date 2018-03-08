@@ -1,5 +1,9 @@
 package edu.gatech.a2340.shelterme.Model;
 
+import com.google.firebase.database.DataSnapshot;
+
+import java.util.List;
+
 /**
  * Created by Brandon on 3/7/18.
  */
@@ -12,12 +16,21 @@ public class ManagerFacade {
     }
 
     final UserManager userManager = UserManager.getInstance();
+    final ShelterManager shelterManager = ShelterManager.getInstance();
 
     private ManagerFacade() {
 
     }
 
     //Public methods go here
+    public void updateShelterList(DataSnapshot snapshot) {
+        shelterManager.updateShelterList(snapshot);
+    }
+
+    public List<Shelter> getShelterList() {
+        return shelterManager.getShelterList();
+    }
+
     public void attemptSignIn(String email, String password,
                               IMessageable onSuccess, IMessageable onFailure) {
         userManager.attemptFirebaseLogin(email, password, onSuccess, onFailure);
