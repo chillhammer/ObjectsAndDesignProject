@@ -34,18 +34,12 @@ public class LoginActivity extends AppCompatActivity {
     private Button signInButton;
     private Button registerButton;
 
-    private FirebaseAuth auth;
-    private FirebaseDatabase database;
-
     boolean loggingIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        auth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
 
         loggingIn = false;
 
@@ -69,6 +63,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Validates the input, then attempts to login with firebase authentication
+     */
     public void onSignInPressed() {
         String email = emailInput.getText().toString();
         String pass = passwordInput.getText().toString();

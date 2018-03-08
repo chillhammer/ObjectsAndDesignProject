@@ -23,6 +23,12 @@ public class ManagerFacade {
         userManager.attemptFirebaseLogin(email, password, onSuccess, onFailure);
     }
 
+    public void attemptRegister(String email, String password, String confirmPassword,
+                                UserType userType, IMessageable onSuccess, IMessageable onFailure) {
+        userManager.attemptFirebaseRegistration(email, password, confirmPassword, userType,
+                onSuccess, onFailure);
+    }
+
     public void signOut() {
         userManager.signOut();
     }
