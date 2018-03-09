@@ -1,6 +1,10 @@
 package edu.gatech.a2340.shelterme.Model;
 
-public class Shelter {
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class Shelter implements Serializable {
     private String name;
     private String address;
     private String longitude;

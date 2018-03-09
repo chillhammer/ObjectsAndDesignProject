@@ -3,8 +3,10 @@ package edu.gatech.a2340.shelterme.Controller;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -47,8 +50,10 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private DrawerLayout mDrawerLayout;
-    private List<Shelter> datasetBuffer;
+    //private List<Shelter> datasetBuffer;
+    private List<Shelter> searchBuffer;
     private ManagerFacade facade;
+    private ArrayAdapter<Shelter> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,28 +66,41 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         ListView listView = findViewById(R.id.listView);
-        final ArrayAdapter<Shelter> adapter = new ArrayAdapter<>(this,
+        adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 ManagerFacade.getInstance().getShelterList());
         listView.setAdapter(adapter);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
+        //datasetBuffer = new ArrayList<>();
+
         //Set up auto updating of the model whenever shelter data changes
-        database.getReference().child("shelters").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                ManagerFacade.getInstance().updateShelterList(snapshot);
-                adapter.clear();
-                adapter.addAll(ManagerFacade.getInstance().getShelterList());
-                adapter.notifyDataSetChanged();
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("MainActivity", databaseError.toException());
-            }
-        });
+        if (getIntent().getSerializableExtra("SEARCH_RESULTS") != null) {
+            Log.i("asdf", "Serializeable code ran");
+            adapter.clear();
+            adapter.addAll((ArrayList<Shelter>) getIntent().getSerializableExtra("SEARCH_RESULTS"));
+            adapter.notifyDataSetChanged();
+        } else {
+            database.getReference().child("shelters").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    ManagerFacade.getInstance().updateShelterList(snapshot);
+                    adapter.clear();
+                    adapter.addAll(ManagerFacade.getInstance().getShelterList());
+                    adapter.notifyDataSetChanged();
+                    searchBuffer = facade.getShelterList();
+                    //datasetBuffer = new ArrayList<>(facade.getShelterList());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // Getting Post failed, log a message
+                    Log.w("MainActivity", databaseError.toException());
+                }
+            });
+
+        }
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
@@ -109,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
 
         mDrawerLayout.closeDrawers();
 
+        handleIntent(getIntent());
+
         //MICHAEL: CHANGE THIS
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -132,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
     @Override
@@ -154,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         handleIntent(intent);
+        intent.putExtra("SEARCH_RESULTS", (Serializable) searchBuffer);
     }
 
     /**
@@ -163,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        datasetBuffer = new ArrayList<Shelter>(facade.getShelterList());
+        //datasetBuffer = new ArrayList<Shelter>(facade.getShelterList());
     }
 
     /**
@@ -172,7 +192,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        Collections.copy(facade.getShelterList(), datasetBuffer);
+        //Collections.copy(facade.getShelterList(), datasetBuffer);
+        if (searchBuffer != null) {
+            adapter.clear();
+            adapter.addAll(searchBuffer);
+            adapter.notifyDataSetChanged();
+        } else {
+            adapter.clear();
+            adapter.addAll(facade.getShelterList());
+            adapter.notifyDataSetChanged();
+        }
     }
 
     /**
@@ -195,11 +224,14 @@ public class MainActivity extends AppCompatActivity {
      * @param intent the new intent created
      */
     private void handleIntent(Intent intent) {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction()) && searchBuffer != null) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             List<String> dataList = getStringList(facade.getShelterList());
             List<ExtractedResult> searchResults = FuzzySearch.extractSorted(query, dataList);
-            Collections.sort(facade.getShelterList(), new ShelterQueryComparator(searchResults));
+            Collections.sort(searchBuffer, new ShelterQueryComparator(searchResults));
+            adapter.clear();
+            adapter.addAll(ManagerFacade.getInstance().getShelterList());
+            adapter.notifyDataSetChanged();
         }
     }
 
