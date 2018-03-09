@@ -2,8 +2,6 @@ package edu.gatech.a2340.shelterme.Controller;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -16,7 +14,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private TextView nameView;
     private TextView capacityView;
-    private TextView genderView;
+    private TextView restrictionsView;
     private TextView longView;
     private TextView latView;
     private TextView addressView;
@@ -32,7 +30,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         nameView = (TextView) findViewById(R.id.shelterName);
         capacityView = (TextView) findViewById(R.id.shelterCapacity);
-        genderView = (TextView) findViewById(R.id.shelterGender);
+        restrictionsView = (TextView) findViewById(R.id.shelterRestrictions);
         longView = (TextView) findViewById(R.id.shelterLong);
         latView = (TextView) findViewById(R.id.shelterLat);
         addressView = (TextView) findViewById(R.id.shelterAddress);
@@ -51,7 +49,7 @@ public class DetailsActivity extends AppCompatActivity {
         if (b != null) {
             nameView.setText((String) b.get("name"));
             capacityView.setText("Capacity: " + (String) b.get("capacity"));
-            genderView.setText("Restrictions: " + (String) b.get("gender"));
+            restrictionsView.setText("Restrictions: " + (String) b.get("restrictions"));
             longView.setText("Longitude: " + (String) b.get("long"));
             latView.setText("Latitude: " + (String) b.get("lat"));
             addressView.setText("Address: " + (String) b.get("address"));
