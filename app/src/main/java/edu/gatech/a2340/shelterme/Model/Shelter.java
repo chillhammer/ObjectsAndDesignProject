@@ -6,7 +6,8 @@ public class Shelter {
     private String longitude;
     private String latitude;
     private String phone;
-    private String capacity;
+    private int capacity;
+    private int vacancies;
     private String restrictions;
 
     //Getters And Setters
@@ -43,15 +44,18 @@ public class Shelter {
         this.phone = phone;
     }
 
-    public String getCapacity() {return capacity;}
-    public void setCapacity(String capacity) {this.capacity = capacity;}
+    public int getCapacity() {return capacity;}
+    public void setCapacity(int capacity) {this.capacity = capacity;}
+
+    public int getVacancies() {return vacancies;}
+    public void setVacancies(int vacancies) {this.vacancies = vacancies;}
 
     public String getRestrictions() {return restrictions;}
     public void setRestrictions(String restrictions) {this.restrictions = restrictions;}
 
     //Constructors
     public Shelter() {
-        this("Default Shelter", "0", "all", "0.0", "0.0", "Default Address", "111-111-1111");
+        this("Default Shelter", 0, 0, "all", "0.0", "0.0", "Default Address", "111-111-1111");
     }
 
     // DO NOT CHANGE THIS. Properly working ListView in MainActivity needs this. If you need to
@@ -62,10 +66,11 @@ public class Shelter {
     }
 
 
-    public Shelter(String name, String capacity, String gender,
+    public Shelter(String name, int capacity, int vacancies, String gender,
                    String longitude, String latitude, String address, String phone) {
         this.name = name;
         this.capacity = capacity;
+        this.vacancies = vacancies;
         this.restrictions = gender;
         this.longitude = longitude;
         this.latitude = latitude;

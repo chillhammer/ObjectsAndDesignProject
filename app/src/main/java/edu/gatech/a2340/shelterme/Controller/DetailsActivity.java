@@ -48,7 +48,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         if (b != null) {
             nameView.setText((String) b.get("name"));
-            capacityView.setText("Capacity: " + (String) b.get("capacity"));
+            capacityView.setText("Vacancies: " + (Integer)b.get("vacancies") + "/" + (Integer) b.get("capacity"));
             restrictionsView.setText("Restrictions: " + (String) b.get("restrictions"));
             longView.setText("Longitude: " + (String) b.get("long"));
             latView.setText("Latitude: " + (String) b.get("lat"));

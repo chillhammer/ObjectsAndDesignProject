@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
                 intent.putExtra("name", ((Shelter) adapterView.getItemAtPosition(position)).getName());
                 intent.putExtra("capacity", ((Shelter) adapterView.getItemAtPosition(position)).getCapacity());
+                intent.putExtra("vacancies", ((Shelter) adapterView.getItemAtPosition(position)).getVacancies());
                 intent.putExtra("restrictions", ((Shelter) adapterView.getItemAtPosition(position)).getRestrictions());
                 intent.putExtra("long", ((Shelter) adapterView.getItemAtPosition(position)).getLongitude());
                 intent.putExtra("lat", ((Shelter) adapterView.getItemAtPosition(position)).getLatitude());
