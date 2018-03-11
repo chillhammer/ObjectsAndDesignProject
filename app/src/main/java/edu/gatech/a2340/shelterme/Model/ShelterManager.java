@@ -31,13 +31,14 @@ public class ShelterManager {
         List<Shelter> updatedShelters = new ArrayList<>();
         for (DataSnapshot child : snapshot.getChildren()) {
             String name = (String) child.child("name").getValue();
-            String capacity = (String) child.child("capacity").getValue();
+            int capacity = ((Long) child.child("capacity").getValue()).intValue();
+            int vacancies = ((Long) child.child("vacancies").getValue()).intValue();
             String gender = (String) child.child("restrictions").getValue();
             String longitude = (String) child.child("longitude").getValue();
             String lat = (String) child.child("latitude").getValue();
             String address = (String) child.child("address").getValue();
             String phone = (String) child.child("phone_number").getValue();
-            updatedShelters.add(new Shelter(name, capacity, gender, longitude,
+            updatedShelters.add(new Shelter(name, capacity, vacancies, gender, longitude,
                     lat, address, phone));
         }
         shelters = updatedShelters;

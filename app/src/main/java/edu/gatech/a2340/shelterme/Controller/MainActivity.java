@@ -25,11 +25,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import edu.gatech.a2340.shelterme.Model.ManagerFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +48,11 @@ import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private DatabaseReference mDatabase;
+
     private Button logoutButton;
+//    private TextView welcomeTextView;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -136,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
                 intent.putExtra("name", ((Shelter) adapterView.getItemAtPosition(position)).getName());
                 intent.putExtra("capacity", ((Shelter) adapterView.getItemAtPosition(position)).getCapacity());
+                intent.putExtra("vacancies", ((Shelter) adapterView.getItemAtPosition(position)).getVacancies());
                 intent.putExtra("restrictions", ((Shelter) adapterView.getItemAtPosition(position)).getRestrictions());
                 intent.putExtra("long", ((Shelter) adapterView.getItemAtPosition(position)).getLongitude());
                 intent.putExtra("lat", ((Shelter) adapterView.getItemAtPosition(position)).getLatitude());
@@ -144,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+//        welcomeTextView = (TextView) findViewById(R.id.welcomeUserText);
+//        welcomeTextView.setText("Welcome " + User.userType.toString() + " " + User.userEmail);
 
         logoutButton = (Button) findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -267,4 +278,6 @@ public class MainActivity extends AppCompatActivity {
         ManagerFacade.getInstance().signOut();
         super.onDestroy();
     }
+
+
 }
