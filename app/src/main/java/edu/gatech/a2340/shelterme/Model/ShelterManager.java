@@ -29,6 +29,7 @@ public class ShelterManager {
 
     void updateShelterList(DataSnapshot snapshot) {
         List<Shelter> updatedShelters = new ArrayList<>();
+        int id = 0;
         for (DataSnapshot child : snapshot.getChildren()) {
             String name = (String) child.child("name").getValue();
             int capacity = ((Long) child.child("capacity").getValue()).intValue();
@@ -38,10 +39,21 @@ public class ShelterManager {
             String lat = (String) child.child("latitude").getValue();
             String address = (String) child.child("address").getValue();
             String phone = (String) child.child("phone_number").getValue();
-            updatedShelters.add(new Shelter(name, capacity, vacancies, gender, longitude,
+            updatedShelters.add(new Shelter(id, name, capacity, vacancies, gender, longitude,
                     lat, address, phone));
+            id++;
         }
         shelters = updatedShelters;
+    }
+
+    /**
+     * Attempts to reserve vacancies at the specified shelter
+     * @param shelterId Id of shelter to make reservations at
+     * @param reservations Number of reservations
+     * @return true if reservation successful, else false
+     */
+    boolean reserveVacancies(int shelterId, int reservations) {
+        return shelters.get(shelterId).reserveVacancies(reservations);
     }
 
     List<Shelter> getShelterList() {

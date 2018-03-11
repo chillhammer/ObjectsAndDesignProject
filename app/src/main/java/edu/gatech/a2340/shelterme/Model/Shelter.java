@@ -2,9 +2,12 @@ package edu.gatech.a2340.shelterme.Model;
 
 import android.os.Parcelable;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.Serializable;
 
 public class Shelter implements Serializable {
+    private int id;
     private String name;
     private String address;
     private String longitude;
@@ -52,14 +55,25 @@ public class Shelter implements Serializable {
     public void setCapacity(int capacity) {this.capacity = capacity;}
 
     public int getVacancies() {return vacancies;}
-    public void setVacancies(int vacancies) {this.vacancies = vacancies;}
+    void setVacancies(int vacancies) {
+        this.vacancies = vacancies;
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        database.getReference().child("shelters/" + id + "/vacancies").setValue(vacancies);
+    }
 
     public String getRestrictions() {return restrictions;}
     public void setRestrictions(String restrictions) {this.restrictions = restrictions;}
 
-    //Constructors
-    public Shelter() {
-        this("Default Shelter", 0, 0, "all", "0.0", "0.0", "Default Address", "111-111-1111");
+    /**
+     * Attempts to reserve <code>reservations</code> number of vacancies
+     * @param reservations Number of vacancies to reserve
+     * @return true if reservation successful, else false
+     */
+    boolean reserveVacancies(int reservations) {
+        if (vacancies - reservations < 0)
+            return false;
+        setVacancies(vacancies - reservations);
+        return true;
     }
 
     // DO NOT CHANGE THIS. Properly working ListView in MainActivity needs this. If you need to
@@ -70,8 +84,9 @@ public class Shelter implements Serializable {
     }
 
 
-    public Shelter(String name, int capacity, int vacancies, String gender,
+    public Shelter(int id, String name, int capacity, int vacancies, String gender,
                    String longitude, String latitude, String address, String phone) {
+        this.id = id;
         this.name = name;
         this.capacity = capacity;
         this.vacancies = vacancies;
