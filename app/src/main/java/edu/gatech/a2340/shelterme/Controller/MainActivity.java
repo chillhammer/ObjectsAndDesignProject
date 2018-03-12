@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.widget.CheckBox;
 import android.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -57,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private DrawerLayout mDrawerLayout;
-    //private List<Shelter> datasetBuffer;
     private List<Shelter> searchBuffer;
     private ManagerFacade facade;
     private ArrayAdapter<Shelter> adapter;
+    private Boolean drawerDefined = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        //datasetBuffer = new ArrayList<>();
-
         //Set up auto updating of the model whenever shelter data changes
         if (getIntent().getSerializableExtra("SEARCH_RESULTS") != null) {
-            Log.i("asdf", "Serializeable code ran");
             adapter.clear();
             adapter.addAll((ArrayList<Shelter>) getIntent().getSerializableExtra("SEARCH_RESULTS"));
             adapter.notifyDataSetChanged();
@@ -97,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
                     adapter.addAll(ManagerFacade.getInstance().getShelterList());
                     adapter.notifyDataSetChanged();
                     searchBuffer = facade.getShelterList();
-                    //datasetBuffer = new ArrayList<>(facade.getShelterList());
                 }
 
                 @Override
@@ -133,6 +130,81 @@ public class MainActivity extends AppCompatActivity {
         actionbar.setHomeAsUpIndicator(android.R.drawable.ic_menu_more);
 
         mDrawerLayout.closeDrawers();
+
+        mDrawerLayout.addDrawerListener(
+                new DrawerLayout.DrawerListener() {
+                    @Override
+                    public void onDrawerSlide(View drawerView, float slideOffset) {
+                        // Respond when the drawer's position changes
+                    }
+
+                    @Override
+                    public void onDrawerOpened(View drawerView) {
+                        // Respond when the drawer is opened
+                        if(!drawerDefined) {
+                            CheckBox other = (CheckBox)findViewById(R.id.nav_other);
+                            CheckBox anyone = (CheckBox)findViewById(R.id.nav_anyone);
+                            other.setChecked(true);
+                            anyone.setChecked(true);
+                            drawerDefined = true;
+                        }
+                    }
+
+                    @Override
+                    public void onDrawerClosed(View drawerView) {
+                        // Respond when the drawer is closed
+                        CheckBox male = (CheckBox)findViewById(R.id.nav_male);
+                        CheckBox female = (CheckBox)findViewById(R.id.nav_female);
+                        CheckBox other = (CheckBox)findViewById(R.id.nav_other);
+
+                        CheckBox family = (CheckBox)findViewById(R.id.nav_family);
+                        CheckBox children = (CheckBox)findViewById(R.id.nav_children);
+                        CheckBox young_adults = (CheckBox)findViewById(R.id.nav_young_adults);
+                        CheckBox anyone = (CheckBox)findViewById(R.id.nav_anyone);
+
+                        searchBuffer.clear();
+
+                        for (Shelter shelter : facade.getShelterList()) {
+                            if (!other.isChecked()) {
+                                if (female.isChecked() && shelter.getRestrictions().contains("Women")) {
+                                    searchBuffer.add(shelter);
+                                    continue;
+                                }
+                                if (male.isChecked() && shelter.getRestrictions().contains("Men")) {
+                                    searchBuffer.add(shelter);
+                                    continue;
+                                }
+                            }
+                            if (!anyone.isChecked()) {
+                                if (family.isChecked() && shelter.getRestrictions().contains("Families")) {
+                                    searchBuffer.add(shelter);
+                                    continue;
+                                }
+                                if (children.isChecked() && shelter.getRestrictions().contains("Children")) {
+                                    searchBuffer.add(shelter);
+                                    continue;
+                                }
+                                if (young_adults.isChecked() && shelter.getRestrictions().contains("Young adults")) {
+                                    searchBuffer.add(shelter);
+                                    continue;
+                                }
+                            }
+                            if (other.isChecked() && anyone.isChecked()) {
+                                searchBuffer.add(shelter);
+                            }
+                        }
+
+                        adapter.clear();
+                        adapter.addAll(searchBuffer);
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onDrawerStateChanged(int newState) {
+                        // Respond when the drawer motion state changes
+                    }
+                }
+        );
 
         handleIntent(getIntent());
 
@@ -194,7 +266,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //datasetBuffer = new ArrayList<Shelter>(facade.getShelterList());
     }
 
     /**
@@ -203,7 +274,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        //Collections.copy(facade.getShelterList(), datasetBuffer);
         if (searchBuffer != null) {
             adapter.clear();
             adapter.addAll(searchBuffer);

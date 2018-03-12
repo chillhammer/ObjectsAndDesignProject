@@ -1,21 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@android:drawable/ic_menu_camera"
-            android:title="asdf" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@android:drawable/ic_menu_gallery"
-            android:title="asdf" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@android:drawable/ic_menu_slideshow"
-            android:title="asdf" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@android:drawable/ic_menu_manage"
-            android:title="asdf" />
-    </group>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/nav_gender_title"
+        android:title="Gender">
+        <menu>
+            <group
+                android:checkableBehavior="none"
+                android:id="@+id/navgroup_gender">
+                <item
+                    android:id="@+id/nav_male"
+                    android:icon="@android:drawable/ic_menu_slideshow"
+                    android:title="Male"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:id="@+id/nav_female"
+                    android:icon="@android:drawable/ic_menu_slideshow"
+                    android:title="Female"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:id="@+id/nav_other"
+                    android:icon="@android:drawable/ic_menu_slideshow"
+                    android:title="Other"
+                    app:actionViewClass="android.widget.CheckBox" />
+            </group>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/nav_age_title"
+        android:title="Age Group">
+        <menu>
+            <group
+                android:checkableBehavior="none"
+                android:id="@+id/navgroup_age">
+                <item
+                    android:id="@+id/nav_family"
+                    android:icon="@android:drawable/ic_menu_slideshow"
+                    android:title="Family/Newborn"
+                    android:clickable="false"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:id="@+id/nav_children"
+                    android:icon="@android:drawable/ic_menu_slideshow"
+                    android:title="Children"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:id="@+id/nav_young_adults"
+                    android:icon="@android:drawable/ic_menu_slideshow"
+                    android:title="Young Adults"
+                    app:actionViewClass="android.widget.CheckBox" />
+                <item
+                    android:id="@+id/nav_anyone"
+                    android:icon="@android:drawable/ic_menu_slideshow"
+                    android:title="Anyone"
+                    app:actionViewClass="android.widget.CheckBox" />
+            </group>
+        </menu>
+    </item>
 </menu>

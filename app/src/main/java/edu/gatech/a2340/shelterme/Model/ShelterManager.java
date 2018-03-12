@@ -45,6 +45,6 @@ public class ShelterManager {
     }
 
     List<Shelter> getShelterList() {
-        return shelters;
+        return new ArrayList<>(shelters);
     }
 }
