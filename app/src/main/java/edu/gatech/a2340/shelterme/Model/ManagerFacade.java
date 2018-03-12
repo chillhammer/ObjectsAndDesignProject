@@ -27,6 +27,16 @@ public class ManagerFacade {
         shelterManager.updateShelterList(snapshot);
     }
 
+    /**
+     * Attempts to reserve vacancies at the specified shelter
+     * @param shelterId Id of shelter to make reservations at
+     * @param reservations Number of reservations
+     * @return true if reservation successful, else false
+     */
+    boolean reserveVacancies(int shelterId, int reservations) {
+        return shelterManager.reserveVacancies(shelterId, reservations);
+    }
+
     public List<Shelter> getShelterList() {
         return shelterManager.getShelterList();
     }
