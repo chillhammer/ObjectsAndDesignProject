@@ -17,63 +17,58 @@ public class Shelter implements Serializable {
     private int vacancies;
     private String restrictions;
 
-    //Getters And Setters
+    //Getters
     public String getName() {
         return name;
-    }
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getAddress() {
         return address;
     }
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public String getLongitude() {
         return longitude;
-    }
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
     }
 
     public String getLatitude() {
         return latitude;
     }
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
 
     public String getPhone() {return phone;}
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 
     public int getCapacity() {return capacity;}
-    public void setCapacity(int capacity) {this.capacity = capacity;}
 
     public int getVacancies() {return vacancies;}
-    void setVacancies(int vacancies) {
+
+    public String getRestrictions() {return restrictions;}
+
+    private void setVacancies(int vacancies) {
         this.vacancies = vacancies;
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         database.getReference().child("shelters/" + id + "/vacancies").setValue(vacancies);
     }
 
-    public String getRestrictions() {return restrictions;}
-    public void setRestrictions(String restrictions) {this.restrictions = restrictions;}
-
     /**
      * Attempts to reserve <code>reservations</code> number of vacancies
      * @param reservations Number of vacancies to reserve
+     * @param onFailure Callback if reservation fails
      * @return true if reservation successful, else false
      */
-    boolean reserveVacancies(int reservations) {
-        if (vacancies - reservations < 0)
+    boolean addReservations(int reservations, IMessageable onFailure) {
+        if (vacancies - reservations < 0) {
+            onFailure.runWithMessage("Not enough vacancies to reserve");
             return false;
+        }
         setVacancies(vacancies - reservations);
         return true;
+    }
+
+    /**
+     * Releases <code>releases</code> number of vacancies
+     * @param releases Number of vacancies to release
+     */
+    void releaseReservations(int releases) {
+        setVacancies(vacancies + releases <= capacity ? vacancies + releases : capacity);
     }
 
     // DO NOT CHANGE THIS. Properly working ListView in MainActivity needs this. If you need to

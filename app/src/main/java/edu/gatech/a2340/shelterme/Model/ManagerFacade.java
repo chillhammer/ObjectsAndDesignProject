@@ -23,6 +23,11 @@ public class ManagerFacade {
     }
 
     //Public methods go here
+
+    /**
+     * Updates the master shelter list with <code>snapshot</code>
+     * @param snapshot The snapshot of the database
+     */
     public void updateShelterList(DataSnapshot snapshot) {
         shelterManager.updateShelterList(snapshot);
     }
@@ -30,22 +35,63 @@ public class ManagerFacade {
     /**
      * Attempts to reserve vacancies at the specified shelter
      * @param shelterId Id of shelter to make reservations at
-     * @param reservations Number of reservations
+     * @param reservedVacancies Number of reservations
+     * @param onFailure Callback for reservation failure
      * @return true if reservation successful, else false
      */
-    boolean reserveVacancies(int shelterId, int reservations) {
-        return shelterManager.reserveVacancies(shelterId, reservations);
+    public boolean addReservations(int shelterId, int reservedVacancies, IMessageable onFailure) {
+        if (shelterManager.addReservations(shelterId, reservedVacancies, onFailure))
+            if (userManager.addReservations(shelterId, reservedVacancies, onFailure))
+                return true;
+        return false;
+
+    }
+
+    /**
+     * Releases a number of vacancies at specified shelter
+     * @param shelterId Id of shelter of release vacancies from
+     * @param releasedVacancies Number of vacancies to release
+     */
+    public void releaseReservations(int shelterId, int releasedVacancies) {
+        shelterManager.releaseReservations(shelterId, releasedVacancies);
+        userManager.releaseReservations(releasedVacancies);
+    }
+
+    /**
+     * Gets the number of reservations by current user at specified shelter
+     * @param shelterId ShelterID of shelter to check reservations
+     * @return Number of reservations held at specified shelter
+     */
+    public int getReservations(int shelterId) {
+        return userManager.getReservations(shelterId);
     }
 
     public List<Shelter> getShelterList() {
         return shelterManager.getShelterList();
     }
 
+    /**
+     * Attempts to log in through firebase authentication
+     * and grab user information
+     * @param email User email
+     * @param password User password
+     * @param onSuccess Callback for successful login
+     * @param onFailure Callback for unsuccessful login
+     */
     public void attemptSignIn(String email, String password,
                               IMessageable onSuccess, IMessageable onFailure) {
         userManager.attemptFirebaseLogin(email, password, onSuccess, onFailure);
     }
 
+    /**
+     * Attempts to register a new user with the passed credentials with firebase
+     * @param email New user email
+     * @param password New user password
+     * @param confirmPassword Confirm password
+     * @param userType New user's UserType
+     * @param onSuccess Callback for successful registration
+     * @param onFailure Callback for unsuccessful registration
+     */
     public void attemptRegister(String email, String password, String confirmPassword,
                                 UserType userType, IMessageable onSuccess, IMessageable onFailure) {
         userManager.attemptFirebaseRegistration(email, password, confirmPassword, userType,

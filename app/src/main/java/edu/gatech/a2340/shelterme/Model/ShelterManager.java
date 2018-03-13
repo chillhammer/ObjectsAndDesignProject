@@ -1,11 +1,6 @@
 package edu.gatech.a2340.shelterme.Model;
 
-import android.util.Log;
-
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +22,10 @@ public class ShelterManager {
         shelters = new ArrayList<>();
     }
 
+    /**
+     * Updates the master shelter list with <code>snapshot</code>
+     * @param snapshot The snapshot of the database
+     */
     void updateShelterList(DataSnapshot snapshot) {
         List<Shelter> updatedShelters = new ArrayList<>();
         int id = 0;
@@ -50,10 +49,15 @@ public class ShelterManager {
      * Attempts to reserve vacancies at the specified shelter
      * @param shelterId Id of shelter to make reservations at
      * @param reservations Number of reservations
+     * @param onFailure Callback for reservation failure
      * @return true if reservation successful, else false
      */
-    boolean reserveVacancies(int shelterId, int reservations) {
-        return shelters.get(shelterId).reserveVacancies(reservations);
+    boolean addReservations(int shelterId, int reservations, IMessageable onFailure) {
+        return shelters.get(shelterId).addReservations(reservations, onFailure);
+    }
+
+    void releaseReservations(int shelterId, int reservations) {
+        shelters.get(shelterId).releaseReservations(reservations);
     }
 
     List<Shelter> getShelterList() {

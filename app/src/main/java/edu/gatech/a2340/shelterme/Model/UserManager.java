@@ -24,9 +24,7 @@ public class UserManager {
 
     private UserManager(){}
 
-    private UserType userType = UserType.ANONYMOUS;
-    private String userEmail = "NoEmail";
-
+    private User user;
 
     /**
      * Validates login email and password with hardcoded rules
@@ -77,35 +75,7 @@ public class UserManager {
             onFailure.runWithMessage(message);
             return;
         }
-        final FirebaseAuth auth = FirebaseAuth.getInstance();
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            //This calls the method passed in as a parameter
-                            onSuccess.runWithMessage("Login successful");
-                            FirebaseUser user = auth.getCurrentUser();
-
-                            //Grab the user's data
-                            database.getReference().child("users").child(user.getUid())
-                                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            userEmail = (String) dataSnapshot.child("email").getValue();
-                                            userType = UserType.valueOf(((String) dataSnapshot.child("userType").getValue()));
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {}
-                                    });
-                        } else {
-                            onFailure.runWithMessage("Error logging in. User may not exist.");
-                            Log.w("UserManager", "Email and password login failed", task.getException());
-                        }
-                    }
-                });
+        user = new User(email, password, onSuccess, onFailure);
     }
 
     /**
@@ -145,6 +115,8 @@ public class UserManager {
                                             DatabaseReference ref = database.getReference().child("users").child(user.getUid());
                                             ref.child("email").setValue(email);
                                             ref.child("userType").setValue(userType.name());
+                                            ref.child("reservations/shelterId").setValue(-1);
+                                            ref.child("reservations/reservedVacancies").setValue(0);
                                             Log.w("UserManager", "createUserWithEmail:Data upload attempt finished.");
                                             onSuccess.runWithMessage("Registration successful, you may now sign in!");
                                         }
@@ -159,10 +131,29 @@ public class UserManager {
                 });
     }
 
+    boolean addReservations(int reservedShelterId, int reservedVacancies, IMessageable onFailure) {
+        return user.addReservations(reservedShelterId, reservedVacancies, onFailure);
+    }
+
+    void releaseReservations(int releasedVacancies) {
+        user.releaseReservations(releasedVacancies);
+    }
+
+    /**
+     * Gets the number of reservations by current user at specified shelter
+     * @param shelterId ShelterID of shelter to check reservations
+     * @return Number of reservations held at specified shelter
+     */
+    int getReservations(int shelterId) {
+        if (shelterId != user.getReservedShelterId())
+            return 0;
+        return user.getReservedVacancies();
+    }
+
+
     void signOut() {
-        FirebaseAuth.getInstance().signOut();
-        userType = UserType.ANONYMOUS;
-        userEmail = "NoEmail";
+        user.signOut();
+        user = null;
     }
 
 }
