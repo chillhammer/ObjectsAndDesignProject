@@ -131,12 +131,44 @@ public class UserManager {
                 });
     }
 
-    boolean addReservations(int reservedShelterId, int reservedVacancies, IMessageable onFailure) {
-        return user.addReservations(reservedShelterId, reservedVacancies, onFailure);
+    /**
+     * Releases number of reservations from the corresponding shelter
+     * @param reservedShelterId ID of shelter to reserve vacancies from
+     * @param reservedVacancies Number of vacancies to reserve
+     */
+    void addReservations(int reservedShelterId, int reservedVacancies) {
+        user.addReservations(reservedShelterId, reservedVacancies);
     }
 
-    void releaseReservations(int releasedVacancies) {
-        user.releaseReservations(releasedVacancies);
+    /**
+     * Check if reservations can be made given current user state
+     * @param reservedShelterId ID of shelter to check reservations from
+     * @param reservedVacancies Number of vacancies to check
+     * @param onFailure Callback depending on which check fails
+     * @return true if the reservation is valid, else false
+     */
+    boolean validateReservations(int reservedShelterId, int reservedVacancies, IMessageable onFailure) {
+        return user.validateReservations(reservedShelterId, reservedVacancies, onFailure);
+    }
+
+    /**
+     * Attempts to release number of reservations from the corresponding shelter
+     * @param reservedShelterId ID of shelter to release reservations from
+     * @param releasedVacancies Number of reservations to release
+     */
+    void releaseReservations(int reservedShelterId, int releasedVacancies) {
+        user.releaseReservations(reservedShelterId, releasedVacancies);
+    }
+
+    /**
+     * Check if reservations can be made given current user state
+     * @param reservedShelterId ID of shelter to check reservations from
+     * @param releasedVacancies Number of vacancies to check
+     * @param onFailure Callback depending on which check fails
+     * @return true if the release is valid, else false
+     */
+    boolean validateRelease(int reservedShelterId, int releasedVacancies, IMessageable onFailure) {
+        return user.validateRelease(reservedShelterId, releasedVacancies, onFailure);
     }
 
     /**
@@ -149,7 +181,6 @@ public class UserManager {
             return 0;
         return user.getReservedVacancies();
     }
-
 
     void signOut() {
         user.signOut();

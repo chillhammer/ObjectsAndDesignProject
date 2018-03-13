@@ -18,6 +18,7 @@ public class Shelter implements Serializable {
     private String restrictions;
 
     //Getters
+    public int getId() { return id; };
     public String getName() {
         return name;
     }
@@ -51,15 +52,22 @@ public class Shelter implements Serializable {
     /**
      * Attempts to reserve <code>reservations</code> number of vacancies
      * @param reservations Number of vacancies to reserve
-     * @param onFailure Callback if reservation fails
-     * @return true if reservation successful, else false
      */
-    boolean addReservations(int reservations, IMessageable onFailure) {
+    void addReservations(int reservations) {
+        setVacancies(vacancies - reservations);
+    }
+
+    /**
+     * Check if reservations can be made
+     * @param reservations Number of reservations
+     * @param onFailure Callback depending on how check fails
+     * @return true if valid reservation, else false
+     */
+    boolean validateReservations(int reservations, IMessageable onFailure) {
         if (vacancies - reservations < 0) {
             onFailure.runWithMessage("Not enough vacancies to reserve");
             return false;
         }
-        setVacancies(vacancies - reservations);
         return true;
     }
 
@@ -68,7 +76,21 @@ public class Shelter implements Serializable {
      * @param releases Number of vacancies to release
      */
     void releaseReservations(int releases) {
-        setVacancies(vacancies + releases <= capacity ? vacancies + releases : capacity);
+        setVacancies(vacancies + releases);
+    }
+
+    /**
+     * Check if reservations can be made
+     * @param releases Number of releases to check
+     * @param onFailure Callback depending on how check fails
+     * @return true if valid release, else false
+     */
+    boolean validateRelease(int releases, IMessageable onFailure) {
+        if (vacancies + releases > capacity) {
+            onFailure.runWithMessage("Vacancies cannot exceed capacity");
+            return false;
+        }
+        return true;
     }
 
     // DO NOT CHANGE THIS. Properly working ListView in MainActivity needs this. If you need to

@@ -40,21 +40,28 @@ public class ManagerFacade {
      * @return true if reservation successful, else false
      */
     public boolean addReservations(int shelterId, int reservedVacancies, IMessageable onFailure) {
-        if (shelterManager.addReservations(shelterId, reservedVacancies, onFailure))
-            if (userManager.addReservations(shelterId, reservedVacancies, onFailure))
-                return true;
-        return false;
-
+        if (!(userManager.validateReservations(shelterId, reservedVacancies, onFailure)
+                && shelterManager.validateReservations(shelterId, reservedVacancies, onFailure)))
+            return false;
+        userManager.addReservations(shelterId, reservedVacancies);
+        shelterManager.addReservations(shelterId, reservedVacancies);
+        return true;
     }
 
     /**
      * Releases a number of vacancies at specified shelter
      * @param shelterId Id of shelter of release vacancies from
      * @param releasedVacancies Number of vacancies to release
+     * @param onFailure Callback for release failure
+     * @return true if release successful, else false
      */
-    public void releaseReservations(int shelterId, int releasedVacancies) {
+    public boolean releaseReservations(int shelterId, int releasedVacancies, IMessageable onFailure) {
+        if (!(userManager.validateRelease(shelterId, releasedVacancies, onFailure)
+                && shelterManager.validateRelease(shelterId, releasedVacancies, onFailure)))
+            return false;
+        userManager.releaseReservations(shelterId, releasedVacancies);
         shelterManager.releaseReservations(shelterId, releasedVacancies);
-        userManager.releaseReservations(releasedVacancies);
+        return true;
     }
 
     /**

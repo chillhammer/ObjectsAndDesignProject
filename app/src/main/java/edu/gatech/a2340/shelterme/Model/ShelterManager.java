@@ -46,18 +46,43 @@ public class ShelterManager {
     }
 
     /**
-     * Attempts to reserve vacancies at the specified shelter
-     * @param shelterId Id of shelter to make reservations at
-     * @param reservations Number of reservations
-     * @param onFailure Callback for reservation failure
-     * @return true if reservation successful, else false
+     * Attempts to reserve <code>reservations</code> number of vacancies
+     * @param shelterId ID of shelter to reserve from
+     * @param reservations Number of vacancies to reserve
      */
-    boolean addReservations(int shelterId, int reservations, IMessageable onFailure) {
-        return shelters.get(shelterId).addReservations(reservations, onFailure);
+    void addReservations(int shelterId, int reservations) {
+        shelters.get(shelterId).addReservations(reservations);
     }
 
-    void releaseReservations(int shelterId, int reservations) {
-        shelters.get(shelterId).releaseReservations(reservations);
+    /**
+     * Check if reservations can be made
+     * @param shelterId ID of shelter to reserve from
+     * @param reservations Number of reservations
+     * @param onFailure Callback depending on how check fails
+     * @return true if valid reservation, else false
+     */
+    boolean validateReservations(int shelterId, int reservations, IMessageable onFailure) {
+        return shelters.get(shelterId).validateReservations(reservations, onFailure);
+    }
+
+    /**
+     * Releases <code>releases</code> number of vacancies
+     * @param shelterId ID of shelter to release from
+     * @param releases Number of vacancies to release
+     */
+    void releaseReservations(int shelterId, int releases) {
+        shelters.get(shelterId).releaseReservations(releases);
+    }
+
+    /**
+     * Check if reservations can be made
+     * @param shelterId ID of shelter to release from
+     * @param releases Number of releases to check
+     * @param onFailure Callback depending on how check fails
+     * @return true if valid release, else false
+     */
+    boolean validateRelease(int shelterId, int releases, IMessageable onFailure) {
+        return shelters.get(shelterId).validateRelease(releases, onFailure);
     }
 
     List<Shelter> getShelterList() {

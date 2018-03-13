@@ -73,17 +73,52 @@ class User {
         FirebaseAuth.getInstance().signOut();
     }
 
-    boolean addReservations(int reservedShelterId, int reservedVacancies, IMessageable onFailure) {
-        if (reservedShelterId != this.reservedShelterId && reservedVacancies > 0) {
+    /**
+     * Releases number of reservations from the corresponding shelter
+     * @param reservedShelterId ID of shelter to reserve vacancies from
+     * @param reservedVacancies Number of vacancies to reserve
+     */
+    void addReservations(int reservedShelterId, int reservedVacancies) {
+        updateReservation(reservedShelterId, this.reservedVacancies + reservedVacancies);
+    }
+
+    /**
+     * Check if reservations can be made given current user state
+     * @param reservedShelterId ID of shelter to check reservations from
+     * @param reservedVacancies Number of vacancies to check
+     * @param onFailure Callback depending on which check fails
+     * @return true if the reservation is valid, else false
+     */
+    boolean validateReservations(int reservedShelterId, int reservedVacancies, IMessageable onFailure) {
+        if (reservedShelterId != this.reservedShelterId && this.reservedVacancies > 0) {
             onFailure.runWithMessage("You already have reservations at another shelter");
             return false;
         }
-        updateReservation(reservedShelterId, this.reservedVacancies + reservedVacancies);
         return true;
     }
 
-    void releaseReservations(int releasedVacancies) {
+    /**
+     * Attempts to release number of reservations from the corresponding shelter
+     * @param reservedShelterId ID of shelter to release reservations from
+     * @param releasedVacancies Number of reservations to release
+     */
+    void releaseReservations(int reservedShelterId, int releasedVacancies) {
         updateReservation(this.reservedShelterId, this.reservedVacancies - releasedVacancies);
+    }
+
+    /**
+     * Check if reservations can be made given current user state
+     * @param reservedShelterId ID of shelter to check reservations from
+     * @param releasedVacancies Number of vacancies to check
+     * @param onFailure Callback depending on which check fails
+     * @return true if the release is valid, else false
+     */
+    boolean validateRelease(int reservedShelterId, int releasedVacancies, IMessageable onFailure) {
+        if (reservedShelterId != this.reservedShelterId || this.reservedVacancies - releasedVacancies < 0) {
+            onFailure.runWithMessage("You do not have any reservations to release");
+            return false;
+        }
+        return true;
     }
 
     private void updateReservation(int reservedShelterId, int reservedVacancies) {
