@@ -43,17 +43,15 @@
         android:id="@+id/shelterPhone"
         android:layout_width="101dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="112dp"
         android:text="Phone Number"
         android:textAlignment="textEnd"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.433"
         app:layout_constraintStart_toEndOf="@+id/shelterRestrictions"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.222" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/shelterRestrictions"
@@ -115,47 +113,43 @@
 
     <Button
         android:id="@+id/buttonIncrement"
-        android:layout_width="79dp"
+        android:layout_width="92dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="148dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
         android:text="+ 1"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.28"
+        app:layout_constraintEnd_toEndOf="@+id/yourReservations"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/buttonDecrement"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.99" />
+        app:layout_constraintTop_toTopOf="@+id/buttonDecrement" />
 
     <Button
         android:id="@+id/buttonDecrement"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="308dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="- 1"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/yourReservations"
+        app:layout_constraintTop_toBottomOf="@+id/yourReservations" />
 
     <TextView
         android:id="@+id/yourReservations"
         android:layout_width="219dp"
         android:layout_height="43dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="88dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="268dp"
+        android:layout_marginTop="8dp"
         android:text="Your Reservations: 0"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/backButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.66"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/shelterLat"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>
