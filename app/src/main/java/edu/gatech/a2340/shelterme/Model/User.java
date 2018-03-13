@@ -52,10 +52,10 @@ class User {
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             userType = UserType.valueOf(((String) dataSnapshot.child("userType").getValue()));
                                             userId = firebaseUser.getUid();
-                                            Object temp = dataSnapshot.child("reservations/shelterId").getValue();
-                                            reservedShelterId = ((Long) (temp == null ? -1 : temp)).intValue();
-                                            temp = dataSnapshot.child("reservations/reservedVacancies").getValue();
-                                            reservedVacancies = ((Long) (temp == null ? 0 : temp)).intValue();
+                                            Long temp = (Long) dataSnapshot.child("reservations/shelterId").getValue();
+                                            reservedShelterId = temp == null ? -1 : temp.intValue();
+                                            temp = (Long) dataSnapshot.child("reservations/reservedVacancies").getValue();
+                                            reservedVacancies = temp == null ? 0 : temp.intValue();
                                         }
 
                                         @Override
