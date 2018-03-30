@@ -75,8 +75,14 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".GoogleMapsActivity"
-            android:label="@string/title_activity_google_maps"></activity>
+            android:name=".Controller.GoogleMapsActivity"
+            android:label="@string/title_activity_google_maps"
+            android:exported="true">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
