@@ -54,10 +54,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        System.out.println("bufferedSearch");
-
-        System.out.println(bufferedSearch);
+        //mMap = googleMap;
 
         for (Shelter shelter : bufferedSearch) {
             Double latitude = Double.parseDouble(shelter.getLatitude());
@@ -65,8 +62,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             LatLng location = new LatLng(latitude, longitude);
             String title = shelter.getName();
             String snippet = shelter.getPhone() + "\n" +  shelter.getVacancies() + "vacancies";
-            mMap.addMarker(new MarkerOptions().position(location).title(title).snippet(snippet));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+            googleMap.addMarker(new MarkerOptions().position(location).title(title).snippet(snippet));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
         }
     }
 
