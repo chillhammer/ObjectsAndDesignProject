@@ -63,7 +63,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             String title = shelter.getName();
             String snippet = shelter.getPhone() + "\n" +  shelter.getVacancies() + "vacancies";
             googleMap.addMarker(new MarkerOptions().position(location).title(title).snippet(snippet));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 10));
         }
     }
 
