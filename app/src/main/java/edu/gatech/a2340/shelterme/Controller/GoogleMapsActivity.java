@@ -55,6 +55,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        System.out.println("bufferedSearch");
+
+        System.out.println(bufferedSearch);
 
         for (Shelter shelter : bufferedSearch) {
             Double latitude = Double.parseDouble(shelter.getLatitude());

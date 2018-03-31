@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private DrawerLayout mDrawerLayout;
-    private List<Shelter> searchBuffer;
+    private static List<Shelter> searchBuffer;
     private ManagerFacade facade;
     private ArrayAdapter<Shelter> adapter;
     private Boolean drawerDefined = false;
@@ -343,4 +343,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void showMap(View view) {
+        Intent intent = new Intent(MainActivity.this, GoogleMapsActivity.class);
+        intent.putExtra("shelters", (Serializable) searchBuffer);
+        startActivity(intent);
+
+    }
 }
