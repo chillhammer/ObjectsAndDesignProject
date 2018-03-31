@@ -27,6 +27,13 @@
                 app:titleTextColor="@android:color/white"
                 app:title="ShelterMe"/>
 
+            <Button
+                android:id="@+id/showMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="showMap"
+                android:text="View Map" />
+
             <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
