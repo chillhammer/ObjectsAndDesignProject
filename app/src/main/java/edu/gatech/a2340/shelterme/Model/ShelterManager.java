@@ -9,7 +9,7 @@ import java.util.List;
  * Created by Brandon on 3/7/18.
  */
 
-public class ShelterManager {
+final class ShelterManager {
     private static final ShelterManager ourInstance = new ShelterManager();
 
     static ShelterManager getInstance() {
@@ -31,7 +31,9 @@ public class ShelterManager {
         int id = 0;
         for (DataSnapshot child : snapshot.getChildren()) {
             String name = (String) child.child("name").getValue();
+            assert child.child("capacity").getValue() != null;
             int capacity = ((Long) child.child("capacity").getValue()).intValue();
+            assert child.child("vacancies").getValue() != null;
             int vacancies = ((Long) child.child("vacancies").getValue()).intValue();
             String gender = (String) child.child("restrictions").getValue();
             String longitude = (String) child.child("longitude").getValue();
@@ -48,41 +50,39 @@ public class ShelterManager {
     /**
      * Attempts to reserve <code>reservations</code> number of vacancies
      * @param shelterId ID of shelter to reserve from
-     * @param reservations Number of vacancies to reserve
+     *
      */
-    void addReservations(int shelterId, int reservations) {
-        shelters.get(shelterId).addReservations(reservations);
+    void addReservations(int shelterId) {
+        shelters.get(shelterId).addReservations(1);
     }
 
     /**
      * Check if reservations can be made
      * @param shelterId ID of shelter to reserve from
-     * @param reservations Number of reservations
      * @param onFailure Callback depending on how check fails
      * @return true if valid reservation, else false
      */
-    boolean validateReservations(int shelterId, int reservations, IMessageable onFailure) {
-        return shelters.get(shelterId).validateReservations(reservations, onFailure);
+    boolean validateReservations(int shelterId, IMessageable onFailure) {
+        return shelters.get(shelterId).validateReservations(1, onFailure);
     }
 
     /**
      * Releases <code>releases</code> number of vacancies
      * @param shelterId ID of shelter to release from
-     * @param releases Number of vacancies to release
+     *
      */
-    void releaseReservations(int shelterId, int releases) {
-        shelters.get(shelterId).releaseReservations(releases);
+    void releaseReservations(int shelterId) {
+        shelters.get(shelterId).releaseReservations(1);
     }
 
     /**
      * Check if reservations can be made
      * @param shelterId ID of shelter to release from
-     * @param releases Number of releases to check
      * @param onFailure Callback depending on how check fails
      * @return true if valid release, else false
      */
-    boolean validateRelease(int shelterId, int releases, IMessageable onFailure) {
-        return shelters.get(shelterId).validateRelease(releases, onFailure);
+    boolean validateRelease(int shelterId, IMessageable onFailure) {
+        return shelters.get(shelterId).validateRelease(1, onFailure);
     }
 
     List<Shelter> getShelterList() {

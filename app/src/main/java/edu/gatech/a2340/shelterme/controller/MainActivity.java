@@ -1,18 +1,14 @@
-package edu.gatech.a2340.shelterme.Controller;
+package edu.gatech.a2340.shelterme.controller;
 
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.SearchView;
@@ -26,10 +22,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -40,7 +34,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import edu.gatech.a2340.shelterme.Model.ManagerFacade;
 import edu.gatech.a2340.shelterme.Model.Shelter;
 import edu.gatech.a2340.shelterme.Model.ShelterQueryComparator;
 import edu.gatech.a2340.shelterme.R;
@@ -49,16 +42,9 @@ import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    private DatabaseReference mDatabase;
-
     private Button logoutButton;
-//    private TextView welcomeTextView;
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private DrawerLayout mDrawerLayout;
-    private static List<Shelter> searchBuffer;
+    private List<Shelter> searchBuffer;
     private ManagerFacade facade;
     private ArrayAdapter<Shelter> adapter;
     private Boolean drawerDefined = false;
@@ -70,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         facade = ManagerFacade.getInstance();
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
         ListView listView = findViewById(R.id.listView);
@@ -126,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         ActionBar actionbar = getSupportActionBar();
+        assert actionbar != null;
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(android.R.drawable.ic_menu_more);
 
@@ -142,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onDrawerOpened(View drawerView) {
                         // Respond when the drawer is opened
                         if(!drawerDefined) {
-                            CheckBox other = (CheckBox)findViewById(R.id.nav_other);
-                            CheckBox anyone = (CheckBox)findViewById(R.id.nav_anyone);
+                            CheckBox other = findViewById(R.id.nav_other);
+                            CheckBox anyone = findViewById(R.id.nav_anyone);
                             other.setChecked(true);
                             anyone.setChecked(true);
                             drawerDefined = true;
@@ -153,14 +140,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onDrawerClosed(View drawerView) {
                         // Respond when the drawer is closed
-                        CheckBox male = (CheckBox)findViewById(R.id.nav_male);
-                        CheckBox female = (CheckBox)findViewById(R.id.nav_female);
-                        CheckBox other = (CheckBox)findViewById(R.id.nav_other);
+                        CheckBox male = findViewById(R.id.nav_male);
+                        CheckBox female = findViewById(R.id.nav_female);
+                        CheckBox other = findViewById(R.id.nav_other);
 
-                        CheckBox family = (CheckBox)findViewById(R.id.nav_family);
-                        CheckBox children = (CheckBox)findViewById(R.id.nav_children);
-                        CheckBox young_adults = (CheckBox)findViewById(R.id.nav_young_adults);
-                        CheckBox anyone = (CheckBox)findViewById(R.id.nav_anyone);
+                        CheckBox family = findViewById(R.id.nav_family);
+                        CheckBox children = findViewById(R.id.nav_children);
+                        CheckBox young_adults = findViewById(R.id.nav_young_adults);
+                        CheckBox anyone = findViewById(R.id.nav_anyone);
 
                         searchBuffer.clear();
 
@@ -221,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
 //        welcomeTextView = (TextView) findViewById(R.id.welcomeUserText);
 //        welcomeTextView.setText("Welcome " + User.userType.toString() + " " + User.userEmail);
 
-        logoutButton = (Button) findViewById(R.id.logoutButton);
+        logoutButton = findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -250,15 +237,6 @@ public class MainActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         handleIntent(intent);
         intent.putExtra("SEARCH_RESULTS", (Serializable) searchBuffer);
-    }
-
-    /**
-     * Saves current dataset before going to another
-     * activity
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     /**
@@ -324,6 +302,7 @@ public class MainActivity extends AppCompatActivity {
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView =
                 (SearchView) menu.findItem(R.id.search).getActionView();
+        assert searchManager != null;
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
 

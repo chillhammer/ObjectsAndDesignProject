@@ -1,5 +1,6 @@
 package edu.gatech.a2340.shelterme.Model;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -11,14 +12,14 @@ import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 
 public class ShelterQueryComparator implements Comparator<Shelter> {
 
-    private List<ExtractedResult> priority;
+    private final List<ExtractedResult> priority;
 
     /**
      * Constructor that sets the priority for the comparator
      * @param namePriority
      */
     public ShelterQueryComparator(List<ExtractedResult> namePriority) {
-        priority = namePriority;
+        priority = new ArrayList<>(namePriority);
     }
 
     /**

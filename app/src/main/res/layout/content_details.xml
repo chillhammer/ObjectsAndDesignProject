@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="edu.gatech.a2340.shelterme.Controller.DetailsActivity"
+    tools:context="edu.gatech.a2340.shelterme.controller.DetailsActivity"
     tools:showIn="@layout/activity_details">
 
     <LinearLayout
@@ -76,8 +76,6 @@
             android:id="@+id/buttonDecrement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
             android:layout_weight="1"
             android:onClick="removeReservation"
             android:text="- 1"

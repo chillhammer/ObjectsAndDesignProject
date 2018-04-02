@@ -8,15 +8,15 @@ import java.util.List;
  * Created by Brandon on 3/7/18.
  */
 
-public class ManagerFacade {
+public final class ManagerFacade {
     private static final ManagerFacade ourInstance = new ManagerFacade();
 
     public static ManagerFacade getInstance() {
         return ourInstance;
     }
 
-    final UserManager userManager = UserManager.getInstance();
-    final ShelterManager shelterManager = ShelterManager.getInstance();
+    private final UserManager userManager = UserManager.getInstance();
+    private final ShelterManager shelterManager = ShelterManager.getInstance();
 
     private ManagerFacade() {
 
@@ -35,33 +35,29 @@ public class ManagerFacade {
     /**
      * Attempts to reserve vacancies at the specified shelter
      * @param shelterId Id of shelter to make reservations at
-     * @param reservedVacancies Number of reservations
      * @param onFailure Callback for reservation failure
      * @return true if reservation successful, else false
      */
-    public boolean addReservations(int shelterId, int reservedVacancies, IMessageable onFailure) {
-        if (!(userManager.validateReservations(shelterId, reservedVacancies, onFailure)
-                && shelterManager.validateReservations(shelterId, reservedVacancies, onFailure)))
-            return false;
-        userManager.addReservations(shelterId, reservedVacancies);
-        shelterManager.addReservations(shelterId, reservedVacancies);
-        return true;
+    public void addReservations(int shelterId, IMessageable onFailure) {
+        if (!(userManager.validateReservations(shelterId, onFailure)
+                && shelterManager.validateReservations(shelterId, onFailure)))
+            return;
+        userManager.addReservations(shelterId);
+        shelterManager.addReservations(shelterId);
     }
 
     /**
      * Releases a number of vacancies at specified shelter
      * @param shelterId Id of shelter of release vacancies from
-     * @param releasedVacancies Number of vacancies to release
      * @param onFailure Callback for release failure
      * @return true if release successful, else false
      */
-    public boolean releaseReservations(int shelterId, int releasedVacancies, IMessageable onFailure) {
-        if (!(userManager.validateRelease(shelterId, releasedVacancies, onFailure)
-                && shelterManager.validateRelease(shelterId, releasedVacancies, onFailure)))
-            return false;
-        userManager.releaseReservations(shelterId, releasedVacancies);
-        shelterManager.releaseReservations(shelterId, releasedVacancies);
-        return true;
+    public void releaseReservations(int shelterId, IMessageable onFailure) {
+        if (!(userManager.validateRelease(shelterId, onFailure)
+                && shelterManager.validateRelease(shelterId, onFailure)))
+            return;
+        userManager.releaseReservations(shelterId);
+        shelterManager.releaseReservations(shelterId);
     }
 
     /**

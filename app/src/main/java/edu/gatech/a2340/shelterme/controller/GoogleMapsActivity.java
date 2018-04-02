@@ -1,4 +1,4 @@
-package edu.gatech.a2340.shelterme.Controller;
+package edu.gatech.a2340.shelterme.controller;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
@@ -17,11 +17,12 @@ import java.util.List;
 import edu.gatech.a2340.shelterme.Model.Shelter;
 import edu.gatech.a2340.shelterme.R;
 
+@SuppressWarnings("FeatureEnvy")
 public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
-    private GoogleMap mMap;
+    // --Commented out by Inspection (4/2/2018 6:04 PM):private GoogleMap mMap;
 
-    List<Shelter> bufferedSearch;
+    private List<Shelter> bufferedSearch;
 
 
     @Override

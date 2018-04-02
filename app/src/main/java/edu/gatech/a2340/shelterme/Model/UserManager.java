@@ -1,6 +1,7 @@
 package edu.gatech.a2340.shelterme.Model;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -9,13 +10,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-public class UserManager {
+final class UserManager {
     private static final UserManager ourInstance = new UserManager();
 
     static UserManager getInstance() {
@@ -24,6 +22,7 @@ public class UserManager {
 
     private UserManager(){}
 
+    @Nullable
     private User user;
 
     /**
@@ -112,6 +111,7 @@ public class UserManager {
                                             //Registration successful, setup user information in database
                                             Log.w("UserManager", "createUserWithEmail:Registration successful. Attempting to add user data to database");
                                             FirebaseUser user = auth.getCurrentUser();
+                                            assert user != null;
                                             DatabaseReference ref = database.getReference().child("users").child(user.getUid());
                                             ref.child("email").setValue(email);
                                             ref.child("userType").setValue(userType.name());
@@ -134,41 +134,43 @@ public class UserManager {
     /**
      * Releases number of reservations from the corresponding shelter
      * @param reservedShelterId ID of shelter to reserve vacancies from
-     * @param reservedVacancies Number of vacancies to reserve
+     *
      */
-    void addReservations(int reservedShelterId, int reservedVacancies) {
-        user.addReservations(reservedShelterId, reservedVacancies);
+    void addReservations(int reservedShelterId) {
+        assert user != null;
+        user.addReservations(reservedShelterId, 1);
     }
 
     /**
      * Check if reservations can be made given current user state
      * @param reservedShelterId ID of shelter to check reservations from
-     * @param reservedVacancies Number of vacancies to check
      * @param onFailure Callback depending on which check fails
      * @return true if the reservation is valid, else false
      */
-    boolean validateReservations(int reservedShelterId, int reservedVacancies, IMessageable onFailure) {
-        return user.validateReservations(reservedShelterId, reservedVacancies, onFailure);
+    boolean validateReservations(int reservedShelterId, IMessageable onFailure) {
+        assert user != null;
+        return user.validateReservations(reservedShelterId, 1, onFailure);
     }
 
     /**
      * Attempts to release number of reservations from the corresponding shelter
      * @param reservedShelterId ID of shelter to release reservations from
-     * @param releasedVacancies Number of reservations to release
+     *
      */
-    void releaseReservations(int reservedShelterId, int releasedVacancies) {
-        user.releaseReservations(reservedShelterId, releasedVacancies);
+    void releaseReservations(int reservedShelterId) {
+        assert user != null;
+        user.releaseReservations(reservedShelterId, 1);
     }
 
     /**
      * Check if reservations can be made given current user state
      * @param reservedShelterId ID of shelter to check reservations from
-     * @param releasedVacancies Number of vacancies to check
      * @param onFailure Callback depending on which check fails
      * @return true if the release is valid, else false
      */
-    boolean validateRelease(int reservedShelterId, int releasedVacancies, IMessageable onFailure) {
-        return user.validateRelease(reservedShelterId, releasedVacancies, onFailure);
+    boolean validateRelease(int reservedShelterId, IMessageable onFailure) {
+        assert user != null;
+        return user.validateRelease(reservedShelterId, 1, onFailure);
     }
 
     /**
@@ -177,12 +179,14 @@ public class UserManager {
      * @return Number of reservations held at specified shelter
      */
     int getReservations(int shelterId) {
+        assert user != null;
         if (shelterId != user.getReservedShelterId())
             return 0;
         return user.getReservedVacancies();
     }
 
     void signOut() {
+        assert user != null;
         user.signOut();
         user = null;
     }

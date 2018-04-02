@@ -1,24 +1,23 @@
 package edu.gatech.a2340.shelterme.Model;
 
-import android.os.Parcelable;
-
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.Serializable;
 
 public class Shelter implements Serializable {
-    private int id;
-    private String name;
-    private String address;
-    private String longitude;
-    private String latitude;
-    private String phone;
-    private int capacity;
+    private final int id;
+    private final String name;
+    private final String address;
+    private final String longitude;
+    private final String latitude;
+    private final String phone;
+    private final int capacity;
     private int vacancies;
-    private String restrictions;
+    private final String restrictions;
 
     //Getters
-    public int getId() { return id; };
+    public int getId() { return id; }
+
     public String getName() {
         return name;
     }
@@ -101,8 +100,8 @@ public class Shelter implements Serializable {
     }
 
 
-    public Shelter(int id, String name, int capacity, int vacancies, String gender,
-                   String longitude, String latitude, String address, String phone) {
+    Shelter(int id, String name, int capacity, int vacancies, String gender,
+            String longitude, String latitude, String address, String phone) {
         this.id = id;
         this.name = name;
         this.capacity = capacity;

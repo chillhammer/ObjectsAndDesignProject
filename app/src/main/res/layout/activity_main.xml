@@ -19,9 +19,8 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/my_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/abc_action_bar_default_height_material"
+                android:layout_height="56dp"
                 android:background="@color/colorPrimary"
-                android:elevation="4dp"
                 android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:titleTextColor="@android:color/white"
@@ -37,13 +36,10 @@
             <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_above="@+id/logoutButton"
-            android:layout_height="wrap_content" />
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/logoutButton"
-                android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"

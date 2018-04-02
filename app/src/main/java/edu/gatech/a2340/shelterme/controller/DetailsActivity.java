@@ -1,4 +1,4 @@
-package edu.gatech.a2340.shelterme.Controller;
+package edu.gatech.a2340.shelterme.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import edu.gatech.a2340.shelterme.Model.ManagerFacade;
 import edu.gatech.a2340.shelterme.Model.Shelter;
 import edu.gatech.a2340.shelterme.R;
 
+@SuppressWarnings("FeatureEnvy")
 public class DetailsActivity extends AppCompatActivity {
 
     private TextView nameView;
@@ -26,23 +27,23 @@ public class DetailsActivity extends AppCompatActivity {
     private Button backButton;
     private TextView reservationsView;
 
-    int shelterId;
+    private int shelterId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        nameView = (TextView) findViewById(R.id.shelterName);
-        capacityView = (TextView) findViewById(R.id.shelterCapacity);
-        restrictionsView = (TextView) findViewById(R.id.shelterRestrictions);
-        longView = (TextView) findViewById(R.id.shelterLong);
-        latView = (TextView) findViewById(R.id.shelterLat);
-        addressView = (TextView) findViewById(R.id.shelterAddress);
-        phoneView = (TextView) findViewById(R.id.shelterPhone);
-        backButton = (Button) findViewById(R.id.backButton);
+        nameView = findViewById(R.id.shelterName);
+        capacityView = findViewById(R.id.shelterCapacity);
+        restrictionsView = findViewById(R.id.shelterRestrictions);
+        longView = findViewById(R.id.shelterLong);
+        latView = findViewById(R.id.shelterLat);
+        addressView = findViewById(R.id.shelterAddress);
+        phoneView = findViewById(R.id.shelterPhone);
+        backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,6 +56,7 @@ public class DetailsActivity extends AppCompatActivity {
         Bundle b = intent.getExtras();
 
         if (b != null) {
+            assert b.get("shelter") != null;
             shelterId = ((Shelter) b.get("shelter")).getId();
             updateUI();
         }
@@ -81,7 +83,7 @@ public class DetailsActivity extends AppCompatActivity {
      * @param view
      */
     public void addReservation(View view) {
-        ManagerFacade.getInstance().addReservations(shelterId, 1,
+        ManagerFacade.getInstance().addReservations(shelterId,
                 new IMessageable() {
                     @Override
                     public void runWithMessage(String message) {
@@ -96,7 +98,7 @@ public class DetailsActivity extends AppCompatActivity {
      * @param view
      */
     public void removeReservation(View view) {
-        ManagerFacade.getInstance().releaseReservations(shelterId, 1,
+        ManagerFacade.getInstance().releaseReservations(shelterId,
                 new IMessageable() {
                     @Override
                     public void runWithMessage(String message) {

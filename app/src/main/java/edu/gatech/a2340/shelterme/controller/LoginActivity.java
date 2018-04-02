@@ -1,4 +1,4 @@
-package edu.gatech.a2340.shelterme.Controller;
+package edu.gatech.a2340.shelterme.controller;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button signInButton;
     private Button registerButton;
 
-    boolean loggingIn;
+    private boolean loggingIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +29,10 @@ public class LoginActivity extends AppCompatActivity {
 
         loggingIn = false;
 
-        emailInput = (EditText) findViewById(R.id.email_input);
-        passwordInput = (EditText) findViewById(R.id.password_input);
-        signInButton = (Button) findViewById(R.id.email_sign_in_button);
-        registerButton = (Button) findViewById(R.id.email_register_button);
+        emailInput = findViewById(R.id.email_input);
+        passwordInput = findViewById(R.id.password_input);
+        signInButton = findViewById(R.id.email_sign_in_button);
+        registerButton = findViewById(R.id.email_register_button);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Validates the input, then attempts to login with firebase authentication
      */
-    public void onSignInPressed() {
+    private void onSignInPressed() {
         String email = emailInput.getText().toString();
         String pass = passwordInput.getText().toString();
         if (!loggingIn && hasWindowFocus()) {

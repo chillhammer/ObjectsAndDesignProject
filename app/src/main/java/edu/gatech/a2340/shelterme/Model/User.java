@@ -19,7 +19,6 @@ import com.google.firebase.database.ValueEventListener;
  */
 
 class User {
-    private UserType userType;
     private String userId;
     private int reservedShelterId;
     private int reservedVacancies;
@@ -46,11 +45,11 @@ class User {
                             final FirebaseUser firebaseUser = auth.getCurrentUser();
 
                             //Grab the user's data
+                            assert firebaseUser != null;
                             database.getReference().child("users").child(firebaseUser.getUid())
                                     .addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
-                                            userType = UserType.valueOf(((String) dataSnapshot.child("userType").getValue()));
                                             userId = firebaseUser.getUid();
                                             Long temp = (Long) dataSnapshot.child("reservations/shelterId").getValue();
                                             reservedShelterId = temp == null ? -1 : temp.intValue();
@@ -130,8 +129,8 @@ class User {
         ref.child("reservedVacancies").setValue(reservedVacancies);
     }
 
-    UserType getUserType() { return userType; }
-    String getUserId() { return userId; }
+    // --Commented out by Inspection (4/2/2018 6:04 PM):UserType getUserType() { return userType; }
+    // --Commented out by Inspection (4/2/2018 6:04 PM):String getUserId() { return userId; }
     int getReservedShelterId() { return reservedShelterId; }
     int getReservedVacancies() { return reservedVacancies; }
 

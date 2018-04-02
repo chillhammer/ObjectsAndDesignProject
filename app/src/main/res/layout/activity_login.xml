@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="edu.gatech.a2340.shelterme.Controller.LoginActivity">
+    tools:context="edu.gatech.a2340.shelterme.controller.LoginActivity">
 
     <!-- Login progress -->
     <ProgressBar
@@ -41,7 +41,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="email"
-                    android:inputType="textPersonName" />
+                    android:inputType="textEmailAddress" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -68,7 +68,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:onClick="onSignInPressed"
                 android:text="Sign in"
                 android:textStyle="bold" />
 

@@ -25,8 +25,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".Controller.LoginActivity">
+        android:theme="@style/AppTheme"
+        android:fullBackupContent="@xml/backup_descriptor">
+        <activity android:name=".controller.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Controller.MainActivity"
+            android:name=".controller.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
@@ -47,11 +48,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Controller.RegistrationActivity"
+            android:name=".controller.RegistrationActivity"
             android:label="@string/title_activity_registration"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Controller.DetailsActivity"
+            android:name=".controller.DetailsActivity"
             android:label="@string/title_activity_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <!-- This meta-data tag is required to use Google Play Services. -->
@@ -59,25 +60,22 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <!-- Include the AdActivity configChanges and theme. -->
-        <activity
-            android:name="com.google.android.gms.ads.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:theme="@android:style/Theme.Translucent" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
              Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
+             You need a different API key for each encryption key,
+             including the release key that is used to
              sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+             You can define the keys for the debug and release targets in src/debug/ and src/release
+
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Controller.GoogleMapsActivity"
+            android:name=".controller.GoogleMapsActivity"
             android:label="@string/title_activity_google_maps"
             android:exported="true">
             <intent-filter>
