@@ -36,7 +36,6 @@ public final class ManagerFacade {
      * Attempts to reserve vacancies at the specified shelter
      * @param shelterId Id of shelter to make reservations at
      * @param onFailure Callback for reservation failure
-     * @return true if reservation successful, else false
      */
     public void addReservations(int shelterId, IMessageable onFailure) {
         if (!(userManager.validateReservations(shelterId, onFailure)
@@ -50,7 +49,6 @@ public final class ManagerFacade {
      * Releases a number of vacancies at specified shelter
      * @param shelterId Id of shelter of release vacancies from
      * @param onFailure Callback for release failure
-     * @return true if release successful, else false
      */
     public void releaseReservations(int shelterId, IMessageable onFailure) {
         if (!(userManager.validateRelease(shelterId, onFailure)

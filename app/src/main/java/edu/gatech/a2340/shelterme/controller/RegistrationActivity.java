@@ -1,13 +1,6 @@
 package edu.gatech.a2340.shelterme.controller;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import edu.gatech.a2340.shelterme.Model.IMessageable;
 import edu.gatech.a2340.shelterme.Model.ManagerFacade;
@@ -20,9 +13,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText passwordInput;
     private EditText passwordConfirmInput;
     private Spinner userTypeInput;
-    private Button registerButton;
-
-    private Button cancelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +30,8 @@ public class RegistrationActivity extends AppCompatActivity {
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         userTypeInput.setAdapter(typeAdapter);
 
-        registerButton = findViewById(R.id.registration_button);
-        cancelButton = findViewById(R.id.cancel_button);
+        Button registerButton = findViewById(R.id.registration_button);
+        Button cancelButton = findViewById(R.id.cancel_button);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override

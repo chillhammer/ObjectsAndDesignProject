@@ -1,26 +1,11 @@
 package edu.gatech.a2340.shelterme.controller;
 
-import android.app.SearchManager;
-import android.content.Context;
-import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.CheckBox;
-import android.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,7 +27,6 @@ import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button logoutButton;
     private DrawerLayout mDrawerLayout;
     private List<Shelter> searchBuffer;
     private ManagerFacade facade;
@@ -73,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
             adapter.addAll((ArrayList<Shelter>) getIntent().getSerializableExtra("SEARCH_RESULTS"));
             adapter.notifyDataSetChanged();
         } else {
-            database.getReference().child("shelters").addValueEventListener(new ValueEventListener() {
+            database.getReference().child("shelters").addValueEventListener(
+                    new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
                     ManagerFacade.getInstance().updateShelterList(snapshot);
@@ -153,7 +138,8 @@ public class MainActivity extends AppCompatActivity {
 
                         for (Shelter shelter : facade.getShelterList()) {
                             if (!other.isChecked()) {
-                                if (female.isChecked() && shelter.getRestrictions().contains("Women")) {
+                                if (female.isChecked() && shelter.getRestrictions().
+                                        contains("Women")) {
                                     searchBuffer.add(shelter);
                                     continue;
                                 }
@@ -163,15 +149,18 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             }
                             if (!anyone.isChecked()) {
-                                if (family.isChecked() && shelter.getRestrictions().contains("Families")) {
+                                if (family.isChecked() && shelter.getRestrictions().
+                                        contains("Families")) {
                                     searchBuffer.add(shelter);
                                     continue;
                                 }
-                                if (children.isChecked() && shelter.getRestrictions().contains("Children")) {
+                                if (children.isChecked() && shelter.getRestrictions().
+                                        contains("Children")) {
                                     searchBuffer.add(shelter);
                                     continue;
                                 }
-                                if (young_adults.isChecked() && shelter.getRestrictions().contains("Young adults")) {
+                                if (young_adults.isChecked() && shelter.getRestrictions().
+                                        contains("Young adults")) {
                                     searchBuffer.add(shelter);
                                     continue;
                                 }
@@ -208,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
 //        welcomeTextView = (TextView) findViewById(R.id.welcomeUserText);
 //        welcomeTextView.setText("Welcome " + User.userType.toString() + " " + User.userEmail);
 
-        logoutButton = findViewById(R.id.logoutButton);
+        Button logoutButton = findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

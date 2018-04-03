@@ -1,7 +1,6 @@
 package edu.gatech.a2340.shelterme.Model;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,7 +31,8 @@ class User {
      * @param onSuccess Callback for successful login
      * @param onFailure Callback for unsuccessful login
      */
-    User(String email, String password, final IMessageable onSuccess, final IMessageable onFailure) {
+    User(String email, String password, final IMessageable onSuccess,
+         final IMessageable onFailure) {
         final FirebaseAuth auth = FirebaseAuth.getInstance();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         auth.signInWithEmailAndPassword(email, password)
@@ -51,9 +51,11 @@ class User {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             userId = firebaseUser.getUid();
-                                            Long temp = (Long) dataSnapshot.child("reservations/shelterId").getValue();
+                                            Long temp = (Long) dataSnapshot.child(
+                                                    "reservations/shelterId").getValue();
                                             reservedShelterId = temp == null ? -1 : temp.intValue();
-                                            temp = (Long) dataSnapshot.child("reservations/reservedVacancies").getValue();
+                                            temp = (Long) dataSnapshot.child(
+                                                    "reservations/reservedVacancies").getValue();
                                             reservedVacancies = temp == null ? 0 : temp.intValue();
                                         }
 
@@ -78,7 +80,8 @@ class User {
      * @param reservedVacancies Number of vacancies to reserve
      */
     void addReservations(int reservedShelterId, int reservedVacancies) {
-        updateReservation(reservedShelterId, this.reservedVacancies + reservedVacancies);
+        updateReservation(reservedShelterId, this.reservedVacancies +
+                reservedVacancies);
     }
 
     /**
@@ -88,7 +91,8 @@ class User {
      * @param onFailure Callback depending on which check fails
      * @return true if the reservation is valid, else false
      */
-    boolean validateReservations(int reservedShelterId, int reservedVacancies, IMessageable onFailure) {
+    boolean validateReservations(int reservedShelterId, int reservedVacancies, IMessageable
+            onFailure) {
         if (reservedShelterId != this.reservedShelterId && this.reservedVacancies > 0) {
             onFailure.runWithMessage("You already have reservations at another shelter");
             return false;
@@ -102,7 +106,8 @@ class User {
      * @param releasedVacancies Number of reservations to release
      */
     void releaseReservations(int reservedShelterId, int releasedVacancies) {
-        updateReservation(this.reservedShelterId, this.reservedVacancies - releasedVacancies);
+        updateReservation(this.reservedShelterId, this.reservedVacancies -
+                releasedVacancies);
     }
 
     /**
@@ -113,7 +118,8 @@ class User {
      * @return true if the release is valid, else false
      */
     boolean validateRelease(int reservedShelterId, int releasedVacancies, IMessageable onFailure) {
-        if (reservedShelterId != this.reservedShelterId || this.reservedVacancies - releasedVacancies < 0) {
+        if (reservedShelterId != this.reservedShelterId || this.reservedVacancies -
+                releasedVacancies < 0) {
             onFailure.runWithMessage("You do not have any reservations to release");
             return false;
         }
@@ -124,7 +130,8 @@ class User {
         this.reservedShelterId = reservedShelterId;
         this.reservedVacancies = reservedVacancies;
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference().child("users").child(userId).child("reservations");
+        DatabaseReference ref = database.getReference().child("users").
+                child(userId).child("reservations");
         ref.child("shelterId").setValue(reservedShelterId);
         ref.child("reservedVacancies").setValue(reservedVacancies);
     }

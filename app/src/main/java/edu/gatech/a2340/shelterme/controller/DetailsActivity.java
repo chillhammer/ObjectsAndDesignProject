@@ -1,13 +1,7 @@
 package edu.gatech.a2340.shelterme.controller;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import edu.gatech.a2340.shelterme.Model.IMessageable;
 import edu.gatech.a2340.shelterme.Model.ManagerFacade;
@@ -24,7 +18,6 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView latView;
     private TextView addressView;
     private TextView phoneView;
-    private Button backButton;
     private TextView reservationsView;
 
     private int shelterId;
@@ -43,7 +36,7 @@ public class DetailsActivity extends AppCompatActivity {
         latView = findViewById(R.id.shelterLat);
         addressView = findViewById(R.id.shelterAddress);
         phoneView = findViewById(R.id.shelterPhone);
-        backButton = findViewById(R.id.backButton);
+        Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,18 +62,20 @@ public class DetailsActivity extends AppCompatActivity {
         nameView.setText(facade.getShelterList().get(shelterId).getName());
         capacityView.setText("Capacity: " + facade.getShelterList().get(shelterId).getVacancies()
                 + "/" + facade.getShelterList().get(shelterId).getCapacity());
-        restrictionsView.setText("Restrictions: " + facade.getShelterList().get(shelterId).getRestrictions());
+        restrictionsView.setText("Restrictions: " +
+                facade.getShelterList().get(shelterId).getRestrictions());
         longView.setText("Longitude: " + facade.getShelterList().get(shelterId).getLongitude());
         latView.setText("Latitude: " + facade.getShelterList().get(shelterId).getLatitude());
         addressView.setText("Address: " + facade.getShelterList().get(shelterId).getAddress());
         phoneView.setText("Phone number: " + facade.getShelterList().get(shelterId).getPhone());
         reservationsView.setText("Your Reservations: "
-                + ManagerFacade.getInstance().getReservations(facade.getShelterList().get(shelterId).getId()));
+                + ManagerFacade.getInstance().getReservations(facade.getShelterList().
+                get(shelterId).getId()));
     }
 
     /**
      * Called by increment button
-     * @param view
+     * @param view view to add reservation to
      */
     public void addReservation(View view) {
         ManagerFacade.getInstance().addReservations(shelterId,
@@ -95,7 +90,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     /**
      * Called by decrement button
-     * @param view
+     * @param view view to remove reservation from
      */
     public void removeReservation(View view) {
         ManagerFacade.getInstance().releaseReservations(shelterId,

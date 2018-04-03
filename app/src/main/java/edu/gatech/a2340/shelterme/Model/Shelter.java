@@ -16,32 +16,71 @@ public class Shelter implements Serializable {
     private final String restrictions;
 
     //Getters
+    /** Gets Id
+     * @return id of shelter
+     */
     public int getId() { return id; }
 
+    /**
+     *  getter for name
+     * @return returns name of shelter
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *  getter for address
+     * @return returns address of shelter
+     */
     public String getAddress() {
         return address;
     }
 
+    /**
+     *  getter for longitude
+     * @return returns longitude of shelter
+     */
     public String getLongitude() {
         return longitude;
     }
 
+    /**
+     *  getter for latitude
+     * @return returns latitude of shelter
+     */
     public String getLatitude() {
         return latitude;
     }
 
+    /**
+     *  getter for phone
+     * @return returns phone number as string of shelter
+     */
     public String getPhone() {return phone;}
 
+    /**
+     *  getter for capacity
+     * @return returns capacity of shelter
+     */
     public int getCapacity() {return capacity;}
 
+    /**
+     *  getter for vacancies
+     * @return returns vacancies of shelter
+     */
     public int getVacancies() {return vacancies;}
 
+    /**
+     *  getter for restrictions
+     * @return returns restrictions of shelter
+     */
     public String getRestrictions() {return restrictions;}
 
+    /**
+     * setter of vacancies for shelter
+     * @param vacancies the new amount of vacancies
+     */
     private void setVacancies(int vacancies) {
         this.vacancies = vacancies;
         FirebaseDatabase database = FirebaseDatabase.getInstance();

@@ -1,8 +1,6 @@
 package edu.gatech.a2340.shelterme.controller;
 
-import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,7 +16,8 @@ import edu.gatech.a2340.shelterme.Model.Shelter;
 import edu.gatech.a2340.shelterme.R;
 
 @SuppressWarnings("FeatureEnvy")
-public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCallback,
+        GoogleMap.OnMarkerClickListener {
 
     // --Commented out by Inspection (4/2/2018 6:04 PM):private GoogleMap mMap;
 
@@ -63,7 +62,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             LatLng location = new LatLng(latitude, longitude);
             String title = shelter.getName();
             String snippet = shelter.getPhone() + "\n" +  shelter.getVacancies() + "vacancies";
-            googleMap.addMarker(new MarkerOptions().position(location).title(title).snippet(snippet));
+            googleMap.addMarker(new MarkerOptions().position(location).title(title).
+                    snippet(snippet));
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 10));
         }
     }

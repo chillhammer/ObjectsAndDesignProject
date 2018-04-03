@@ -1,7 +1,5 @@
 package edu.gatech.a2340.shelterme;
 
-import android.icu.lang.UScript;
-
 import org.junit.Test;
 
 import edu.gatech.a2340.shelterme.Model.UserType;

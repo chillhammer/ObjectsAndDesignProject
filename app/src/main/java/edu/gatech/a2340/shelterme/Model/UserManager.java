@@ -2,7 +2,6 @@ package edu.gatech.a2340.shelterme.Model;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,7 +44,8 @@ final class UserManager {
      * @param confirmPassword Confirm Password to validate
      * @return null if valid, else a string containing the input discrepancy
      */
-    private String validateRegistrationInput(String email, String password, String confirmPassword) {
+    private String validateRegistrationInput(String email, String password,
+                                             String confirmPassword) {
         if (password.equals(confirmPassword)) {
             if (email.isEmpty() || password.isEmpty()) {
                 return "All fields must be filled";
@@ -68,7 +68,8 @@ final class UserManager {
      * @param onSuccess Callback for successful login
      * @param onFailure Callback for unsuccessful login
      */
-    void attemptFirebaseLogin(String email, String password, final IMessageable onSuccess, final IMessageable onFailure) {
+    void attemptFirebaseLogin(String email, String password, final IMessageable
+            onSuccess, final IMessageable onFailure) {
         String message = validateLoginInput(email, password);
         if (message != null) {
             onFailure.runWithMessage(message);
@@ -108,23 +109,30 @@ final class UserManager {
                                     .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                                         @Override
                                         public void onSuccess(AuthResult authResult) {
-                                            //Registration successful, setup user information in database
-                                            Log.w("UserManager", "createUserWithEmail:Registration successful. Attempting to add user data to database");
+                                            //Registration successful, setup user information in
+                                            // database
+                                            Log.w("UserManager",
+                                                    "createUserWithEmail:Registration successful. "+
+                                                            "Attempting to add user " +
+                                                            " to database");
                                             FirebaseUser user = auth.getCurrentUser();
                                             assert user != null;
-                                            DatabaseReference ref = database.getReference().child("users").child(user.getUid());
+                                            DatabaseReference ref = database.getReference().
+                                                    child("users").child(user.getUid());
                                             ref.child("email").setValue(email);
                                             ref.child("userType").setValue(userType.name());
                                             ref.child("reservations/shelterId").setValue(-1);
                                             ref.child("reservations/reservedVacancies").setValue(0);
-                                            Log.w("UserManager", "createUserWithEmail:Data upload attempt finished.");
-                                            onSuccess.runWithMessage("Registration successful, you may now sign in!");
+                                            Log.w("UserManager", "createUserWithEmail:Data upload "+
+                                                    "attempt finished.");
+                                            onSuccess.runWithMessage("Registration successful, " +
+                                                    "you may now sign in!");
                                         }
                                     });
 
                         } else {
                             //Registration failed
-                            Log.w("UserManager", "createUserWithEmail:failure", task.getException());
+                            Log.w("UserManager", "createUserWithEmail:failure",task.getException());
                             onFailure.runWithMessage("Registration failed");
                         }
                     }
