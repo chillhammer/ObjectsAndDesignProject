@@ -39,8 +39,8 @@ public class ExampleUnitTest {
 
     // Andrew Hoyt Unit Test
     @Test
-    public void Shelter_validateReleaseIsCorrect() throws Exception {
-        Shelter shelter = new Shelter(0, "", 0, 1,
+    public void Shelter_validateReservationsIsCorrect() throws Exception {
+        Shelter shelter = new Shelter(0, "", 7, 1,
                 "", "", "", "", "");
 
         IMessageable onFailure = new IMessageable() {
@@ -50,10 +50,25 @@ public class ExampleUnitTest {
             }
         };
 
-        assertEquals(true, shelter.validateReservations(0, onFailure));
+        assertEquals(true, shelter.validateReservations(1, onFailure));
         assertEquals(false, shelter.validateReservations(2, onFailure));
     }
 
+    // Brandon Shockley Unit Test
+    @Test
+    public void Shelter_validateReleaseIsCorrect() {
+        Shelter shelter = new Shelter(0,"",3,1, "",
+                "", "", "", "");
+        IMessageable onFailure = new IMessageable() {
+            @Override
+            public void runWithMessage(String message) {
+                //Do nothing
+            }
+        };
+
+        assertEquals(true, shelter.validateRelease(1, onFailure));
+        assertEquals(false, shelter.validateRelease(3, onFailure));
+    }
 
 
 

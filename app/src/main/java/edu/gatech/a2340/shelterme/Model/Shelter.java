@@ -123,7 +123,7 @@ public class Shelter implements Serializable {
      * @param onFailure Callback depending on how check fails
      * @return true if valid release, else false
      */
-    boolean validateRelease(int releases, IMessageable onFailure) {
+    public boolean validateRelease(int releases, IMessageable onFailure) {
         if (vacancies + releases > capacity) {
             onFailure.runWithMessage("Vacancies cannot exceed capacity");
             return false;
