@@ -101,7 +101,7 @@ public class Shelter implements Serializable {
      * @param onFailure Callback depending on how check fails
      * @return true if valid reservation, else false
      */
-    boolean validateReservations(int reservations, IMessageable onFailure) {
+    public boolean validateReservations(int reservations, IMessageable onFailure) {
         if (vacancies - reservations < 0) {
             onFailure.runWithMessage("Not enough vacancies to reserve");
             return false;
@@ -139,7 +139,7 @@ public class Shelter implements Serializable {
     }
 
 
-    Shelter(int id, String name, int capacity, int vacancies, String gender,
+    public Shelter(int id, String name, int capacity, int vacancies, String gender,
             String longitude, String latitude, String address, String phone) {
         this.id = id;
         this.name = name;

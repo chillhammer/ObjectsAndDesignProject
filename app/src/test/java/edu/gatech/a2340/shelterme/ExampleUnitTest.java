@@ -1,7 +1,10 @@
 package edu.gatech.a2340.shelterme;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import edu.gatech.a2340.shelterme.Model.IMessageable;
+import edu.gatech.a2340.shelterme.Model.Shelter;
 import edu.gatech.a2340.shelterme.Model.UserType;
 
 import static org.junit.Assert.*;
@@ -32,6 +35,23 @@ public class ExampleUnitTest {
         assertEquals("Anonymous", anon.toString());
         assertEquals("Admin", admin.toString());
 
+    }
+
+    // Andrew Hoyt Unit Test
+    @Test
+    public void Shelter_validateReleaseIsCorrect() throws Exception {
+        Shelter shelter = new Shelter(0, "", 0, 1,
+                "", "", "", "", "");
+
+        IMessageable onFailure = new IMessageable() {
+            @Override
+            public void runWithMessage(String message) {
+                message = "Test";
+            }
+        };
+
+        assertEquals(true, shelter.validateReservations(0, onFailure));
+        assertEquals(false, shelter.validateReservations(2, onFailure));
     }
 
 
