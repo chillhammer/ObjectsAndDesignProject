@@ -1,11 +1,13 @@
 package edu.gatech.a2340.shelterme;
 
+
 import org.junit.Before;
 import org.junit.Test;
 
 import edu.gatech.a2340.shelterme.Model.IMessageable;
 import edu.gatech.a2340.shelterme.Model.Shelter;
 import edu.gatech.a2340.shelterme.Model.UserType;
+//import edu.gatech.a2340.shelterme.Model.UserManager;
 
 import static org.junit.Assert.*;
 
@@ -21,7 +23,14 @@ public class ExampleUnitTest {
         assertEquals(4, 2 + 2);
     }
 
+    // Michael Fan Unit Test
+    @Test
+    public void UserManager_validateLoginInput() throws Exception {
 
+        // TODO
+    }
+
+    // Will Said Unit Test
     @Test
     public void UserType_toStringIsCorrect() throws Exception {
 
