@@ -1,13 +1,12 @@
 package edu.gatech.a2340.shelterme;
 
 
-import org.junit.Before;
 import org.junit.Test;
 
 import edu.gatech.a2340.shelterme.Model.IMessageable;
 import edu.gatech.a2340.shelterme.Model.Shelter;
 import edu.gatech.a2340.shelterme.Model.UserType;
-//import edu.gatech.a2340.shelterme.Model.UserManager;
+import edu.gatech.a2340.shelterme.Model.ManagerFacade;
 
 import static org.junit.Assert.*;
 
@@ -79,6 +78,46 @@ public class ExampleUnitTest {
         assertEquals(false, shelter.validateRelease(3, onFailure));
     }
 
-
+    // Kyle Xiao Unit Test
+    @Test (expected = java.lang.ExceptionInInitializerError.class)
+    public void UserManager_validateRegistrationInputIsCorrect() {
+        String output;
+        IMessageable onDummySuccess = new IMessageable() {
+            @Override
+            public void runWithMessage(String message) {
+                //This line should never run for the purposes of this test
+                assertEquals(1, 2);
+            }
+        };
+        IMessageable onFailureMismatchPassword = new IMessageable() {
+            @Override
+            public void runWithMessage(String message) {
+                assertEquals("Passwords must match", message);
+            }
+        };
+        IMessageable onFailureFieldEmpty = new IMessageable() {
+            @Override
+            public void runWithMessage(String message) {
+                assertEquals("All fields must be filled", message);
+            }
+        };
+        IMessageable onFailureShortPassword = new IMessageable() {
+            @Override
+            public void runWithMessage(String message) {
+                assertEquals("Password must be at least 8 characters", message);
+            }
+        };
+        IMessageable onPassValidationButFailRegistration = new IMessageable() {
+            @Override
+            public void runWithMessage(String message) {
+                assertEquals("Registration failed", message);
+            }
+        };
+        ManagerFacade.getInstance().attemptRegister("kylepxiao@gmail.com", "cs2340", "password", UserType.ADMIN, onDummySuccess, onFailureMismatchPassword);
+        ManagerFacade.getInstance().attemptRegister("", "", "", UserType.ADMIN, onDummySuccess, onFailureFieldEmpty);
+        ManagerFacade.getInstance().attemptRegister("kylepxiao@gmail.com", "cs2340", "cs2340", UserType.ADMIN, onDummySuccess, onFailureShortPassword);
+        // This line should throw an exception after validation succeeds and ManagerFacade attempts to register this user
+        ManagerFacade.getInstance().attemptRegister("kylepxiao@gmail.com", "password", "password", UserType.ADMIN, onDummySuccess, onPassValidationButFailRegistration);
+    }
 
 }
