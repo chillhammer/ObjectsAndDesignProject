@@ -1,6 +1,8 @@
 package edu.gatech.a2340.shelterme;
 
 
+import android.util.Log;
+
 import org.junit.Test;
 
 import edu.gatech.a2340.shelterme.Model.IMessageable;
@@ -23,10 +25,47 @@ public class ExampleUnitTest {
     }
 
     // Michael Fan Unit Test
-    @Test
+    @Test (expected = java.lang.ExceptionInInitializerError.class)
     public void UserManager_validateLoginInput() throws Exception {
 
-        // TODO
+        String output;
+        IMessageable emptyEmailFailure = new IMessageable() {
+            @Override
+            public void runWithMessage(String message) {
+                assertEquals("Email or password cannot be empty", message);
+            }
+        };
+        IMessageable emptyPasswordFailure = new IMessageable() {
+            @Override
+            public void runWithMessage(String message) {
+                assertEquals("Email or password cannot be empty", message);
+            }
+        };
+        IMessageable bothFieldsEmptyFailure = new IMessageable() {
+            @Override
+            public void runWithMessage(String message) {
+                assertEquals("Email or password cannot be empty", message);
+            }
+        };
+
+        IMessageable validationSuccess = new IMessageable() {
+            @Override
+            public void runWithMessage(String message) {
+                assertEquals(null, message);
+            }
+        };
+        IMessageable dummySuccessCallback = new IMessageable() {
+            @Override
+            public void runWithMessage(String message) {
+                Log.v("NOTE", "Success callback");
+            }
+        };
+
+        ManagerFacade.getInstance().attemptSignIn("email@email.com", "", dummySuccessCallback, emptyPasswordFailure);
+        ManagerFacade.getInstance().attemptSignIn("", "password", dummySuccessCallback, emptyEmailFailure);
+        ManagerFacade.getInstance().attemptSignIn("", "", dummySuccessCallback, bothFieldsEmptyFailure);
+        // because below is valid signin, an exception will be thrown since there's no Firebase instance
+        ManagerFacade.getInstance().attemptSignIn("email@email.com", "password", dummySuccessCallback, validationSuccess);
     }
 
     // Will Said Unit Test
@@ -79,7 +118,7 @@ public class ExampleUnitTest {
     }
 
     // Kyle Xiao Unit Test
-    @Test (expected = java.lang.ExceptionInInitializerError.class)
+    @Test (expected = java.lang.NoClassDefFoundError.class)
     public void UserManager_validateRegistrationInputIsCorrect() {
         String output;
         IMessageable onDummySuccess = new IMessageable() {
